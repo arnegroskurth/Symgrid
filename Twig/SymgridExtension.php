@@ -2,6 +2,9 @@
 
 namespace ArneGroskurth\Symgrid\Twig;
 
+use ArneGroskurth\Symgrid\Grid\Exception;
+use ArneGroskurth\Symgrid\Grid\Grid;
+
 
 class SymgridExtension extends \Twig_Extension {
 
@@ -20,7 +23,27 @@ class SymgridExtension extends \Twig_Extension {
     public function getFunctions() {
 
         return array(
-            'symgrid' => new \Twig_Function_Function()
+            new \Twig_SimpleFunction('symgrid', array($this, 'renderGrid'), array(
+                'needs_environment' => true,
+                'is_safe' => array('html')
+            ))
         );
+    }
+
+
+    /**
+     * @param \Twig_Environment $twig
+     * @param Grid $grid
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function renderGrid(\Twig_Environment $twig, Grid $grid) {
+
+        $grid->validate();
+
+        return $twig->render('ArneGroskurthSymgridBundle::grid.html.twig', array(
+            'grid' => $grid
+        ));
     }
 }

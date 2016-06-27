@@ -1,0 +1,24 @@
+
+<table>
+
+    {% include 'ArneGroskurthSymgridBundle::thead.html.twig' %}
+
+    {% if initial is defined %}
+        <tbody>
+            <tr>
+                <td colspan="100%"></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="toolbar">
+                <td colspan="100%">
+                    <div class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="Loading" /> Loading...</div>
+                </td>
+            </tr>
+        </tfoot>
+    {% else %}
+        {% include 'ArneGroskurthSymgridBundle::tbody.html.twig' %}
+        {% include 'ArneGroskurthSymgridBundle::tfoot.html.twig' %}
+    {% endif %}
+
+</table>

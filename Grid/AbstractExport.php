@@ -2,6 +2,8 @@
 
 namespace ArneGroskurth\Symgrid\Grid;
 
+use Symfony\Component\HttpFoundation\Response;
+
 
 abstract class AbstractExport {
 
@@ -10,22 +12,15 @@ abstract class AbstractExport {
      */
     protected $grid;
 
-    /**
-     * @var AbstractDataSource
-     */
-    protected $dataSource;
-
 
     /**
      * AbstractExport constructor.
      *
      * @param Grid $grid
-     * @param AbstractDataSource $dataSource
      */
-    public function __construct(Grid $grid, AbstractDataSource $dataSource) {
+    public function __construct(Grid $grid) {
 
         $this->grid = $grid;
-        $this->dataSource = $dataSource;
     }
 
 

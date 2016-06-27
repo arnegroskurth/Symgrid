@@ -1,20 +1,17 @@
 
-<div class="symgrid">
+<div id="symgrid-{{ grid.identifier }}" class="{{ grid.classes|join(' ') }} loading" data-identifier="{{ grid.identifier }}" data-title="{{ grid.title }}">
 
-    <table>
-        <thead>
-            <tr>
-                {% for column in grid.columnList %}
-                    <th>{{ column.title }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
+    <div class="error-message">Unfortunately an error occured during the loading of the grid content. Sorry!</div>
 
-        </tbody>
-        <tfoot>
+    <form>
 
-        </tfoot>
-    </table>
+        <input type="hidden" name="_symgrid" value="{{ grid.identifier }}" />
+
+        <input type="hidden" name="_orderPath" value="{% if grid.dataSource.appliedOrder %}{{ grid.dataSource.appliedOrder.path }}{% endif %}" />
+        <input type="hidden" name="_orderDirection" value="{% if grid.dataSource.appliedOrder %}{{ grid.dataSource.appliedOrder.direction }}{% endif %}" />
+
+        {% include 'ArneGroskurthSymgridBundle::table.html.twig' with {initial: true} %}
+
+    </form>
 
 </div>

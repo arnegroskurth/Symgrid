@@ -1,0 +1,31 @@
+
+<tbody>
+
+    {% for dataKey, dataRecord in grid.dataSource %}
+        <tr id="symgrid-{{ grid.identifier}}-row-{{ dataKey }}">
+
+            {% if grid.groupActions %}
+                <td class="row-select">
+                    <label for="symgrid-{{ grid.identifier}}-row-select-{{ dataRecord.id }}">
+                        <input type="checkbox" id="symgrid-{{ grid.identifier}}-row-select-{{ dataRecord.id }}" name="_rows[]" value="{{ dataKey }}" />
+                    </label>
+                </td>
+            {% endif %}
+
+            {% for column in grid.columnList %}
+                {% set value = column.render(dataRecord) %}
+                <td class="{{ column.classes|join(' ') }} {% if value is null %}null{% endif %}">
+                    {% if value is null %}-{% else %}{{ value|raw }}{% endif %}
+                </td>
+            {% endfor %}
+
+        </tr>
+    {% endfor %}
+
+    {% if grid.totalDataCount < 1 %}
+    <tr class="empty">
+        <td colspan="100%">No results...</td>
+    </tr>
+    {% endif %}
+
+</tbody>

@@ -4,7 +4,9 @@
   "type": "symfony-bundle",
   "license": "MIT",
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.4.0",
+    "symfony/smfony": "~3.2",
+    "twig/twig": "~1.24"
   },
   "autoload": {
     "psr-4": {

@@ -26,9 +26,14 @@ class GroupAction {
     protected $parameterName = 'id';
 
     /**
-     * @var bool
+     * @var string Target frame to use for (virtual) form submission.
      */
-    protected $openInNewWindow = false;
+    protected $target = '_self';
+
+    /**
+     * @var string Http method to use.
+     */
+    protected $method = 'get';
 
     /**
      * @var string
@@ -130,21 +135,41 @@ class GroupAction {
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isOpenInNewWindow() {
+    public function getTarget() {
 
-        return $this->openInNewWindow;
+        return $this->target;
     }
 
     /**
-     * @param boolean $openInNewWindow
+     * @param string $target
      *
      * @return GroupAction
      */
-    public function setOpenInNewWindow($openInNewWindow) {
+    public function setTarget($target) {
 
-        $this->openInNewWindow = $openInNewWindow;
+        $this->target = $target;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod() {
+
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return GroupAction
+     */
+    public function setMethod($method) {
+
+        $this->method = $method;
 
         return $this;
     }

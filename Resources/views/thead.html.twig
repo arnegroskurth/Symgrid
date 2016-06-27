@@ -1,0 +1,95 @@
+
+<thead>
+    <tr class="titles">
+        {% if grid.groupActions %}
+            <th class="row-select">&nbsp;</th>
+        {% endif %}
+
+        {% for column in grid.columnList %}
+            <th class="{{ column.classes|join(' ') }}" data-column="{{ column.identifier }}" data-path="{{ column.dataPath }}" {% if column.headerTooltip %}data-tooltip="{{ column.headerTooltip }}"{% endif %}>
+                {% if grid.sortable and column.sortable %}
+                    <a class="sort" href="#">{{ column.title }}</a>
+                {% else %}
+                    {{ column.title }}
+                {% endif %}
+            </th>
+        {% endfor %}
+    </tr>
+
+{% if grid.filterable and grid.columnList.hasFilterableColumns %}
+    <tr class="filters">
+        {% if grid.groupActions %}
+            <th class="row-select row-select-all">
+                <label for="symgrid-{{ grid.identifier}}-row-select-all">
+                    <input type="checkbox" id="symgrid-{{ grid.identifier}}-row-select-all" />
+                </label>
+            </th>
+        {% endif %}
+
+        {% for column in grid.columnList %}
+            <th class="{{ column.classes|join(' ') }}">
+
+                {% if column.filterDateExact %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
+                        <input type="date" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" />
+                    </label>
+                {% elseif column.filterDateRange %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-after">
+                        <input type="date" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-after" name="_filter[{{ column.identifier }}][after]" />
+                    </label>
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-before">
+                        <input type="date" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-before" name="_filter[{{ column.identifier }}][before]" />
+                    </label>
+                {% elseif column.filterNumericExact %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
+                        <input type="number" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" />
+                    </label>
+                {% elseif column.filterNumericRange %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-min">
+                        <input type="number" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-min" name="_filter[{{ column.identifier }}][min]" />
+                    </label>
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-max">
+                        <input type="number" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-max" name="_filter[{{ column.identifier }}][max]" />
+                    </label>
+                {% elseif column.filterSelect %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-in">
+                        <select class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-in" name="_filter[{{ column.identifier }}][in]">
+                            <option></option>
+
+                            {% if column.filterNullable %}
+                                <option value="null">Is not defined</option>
+                            {% endif %}
+
+                            <optgroup label="Values">
+                                {% for value, alias in column.aliases %}
+                                    <option value="{{ value }}">{{ alias }}</option>
+                                {% endfor %}
+                            </optgroup>
+                        </select>
+                    </label>
+                {% elseif column.filterStringContains %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-contains">
+                        <input type="search" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-contains" name="_filter[{{ column.identifier }}][contains]" />
+                    </label>
+                {% elseif column.filterStringExact %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
+                        <input type="text" class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" />
+                    </label>
+                {% endif %}
+
+                {% if column.filterNullable and not column.filterSelect %}
+                    <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null">
+                        <select class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null" name="_filter[{{ column.identifier }}][null]">
+                            <option></option>
+                            <option value="yes">Empty</option>
+                            <option value="no">Not empty</option>
+                        </select>
+                    </label>
+                {% endif %}
+
+            </th>
+        {% endfor %}
+    </tr>
+{% endif %}
+
+</thead>

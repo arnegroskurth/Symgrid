@@ -1,9 +1,10 @@
 <?php
 
-namespace ArneGroskurth\Symgrid\Column;
+namespace ArneGroskurth\Symgrid\Grid\Column;
 
 use ArneGroskurth\Symgrid\Grid\AbstractColumn;
-use ArneGroskurth\Symgrid\Grid\AbstractDataSource;
+use ArneGroskurth\Symgrid\Grid\Constants;
+use ArneGroskurth\Symgrid\Grid\DataRecord;
 
 
 class CallbackColumn extends AbstractColumn {
@@ -24,18 +25,15 @@ class CallbackColumn extends AbstractColumn {
 
         parent::__construct($title);
 
-        $this->callback = $callback;
+        $this->callback = $callback->bindTo($this);
     }
 
-
+    
     /**
-     * @param AbstractDataSource $data
-     * @param string $target
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function render(AbstractDataSource $data, $target = \ArneGroskurth\Symgrid\TARGET_HTML) {
+    public function render(DataRecord $dataRecord, $target = Constants::TARGET_HTML) {
 
-        return call_user_func($this->callback, $data, $target);
+        return call_user_func($this->callback, $dataRecord, $target);
     }
 }

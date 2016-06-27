@@ -3,12 +3,137 @@
 namespace ArneGroskurth\Symgrid\Grid;
 
 
-class ColumnList implements \ArrayAccess, \Countable, \IteratorAggregate {
+class ColumnList implements \Countable, \IteratorAggregate {
 
     /**
      * @var AbstractColumn[]
      */
     protected $columns = array();
+
+
+    /**
+     * @param AbstractColumn $column Column to add to grid.
+     * @param int $position Zero-based position as integer to add the column at. Zero is the leftmost column. Column is appended to the end if omitted.
+     * @param bool $replaceOnCollision Whether to replace a potential existing column with the same identifier.
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function addColumn(AbstractColumn $column, $position = null, $replaceOnCollision = false) {
+        
+        foreach($this->columns as $key => $existingColumn) {
+            
+            if($column->getIdentifier() == $existingColumn->getIdentifier()) {
+
+                if($replaceOnCollision) {
+
+                    $this->removeColumnByIdentifier($column->getIdentifier());
+
+                    return $this->addColumn($column, is_null($position) ? $key : $position);
+                }
+
+                else throw new Exception("Trying to add column with identifier that already exists.");
+            }
+        }
+
+        if(is_int($position)) {
+            
+            array_splice($this->columns, $position, 0, array($column));
+        }
+        else {
+
+            $this->columns[] = $column;
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @param string $identifier
+     * @param bool $throwExceptionOnFailure
+     *
+     * @throws Exception
+     * @return $this
+     */
+    public function removeColumnByIdentifier($identifier, $throwExceptionOnFailure = true) {
+        
+        foreach($this->columns as $key => $column) {
+
+            if($column->getIdentifier() == $identifier) {
+
+                unset($this->columns[$key]);
+
+                $this->columns = array_values($this->columns);
+
+                return $this;
+            }
+        }
+
+        if($throwExceptionOnFailure) {
+
+            throw new Exception(sprintf("Trying to remove non-existing column with identifier '%s'.", $identifier));
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Appends another columnList to the end of this columnList.
+     *
+     * @param ColumnList $columnList
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function append(ColumnList $columnList) {
+
+        foreach($columnList->getIterator(true) as $column) {
+
+            $this->addColumn($column);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @param bool $includeHidden
+     *
+     * @return bool
+     */
+    public function hasFilterableColumns($includeHidden = false) {
+
+        foreach($this->getIterator($includeHidden) as $column) {
+
+            if($column->getFilter()) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * @param bool $includeHidden
+     *
+     * @return bool
+     */
+    public function hasAggregatableColumns($includeHidden = false) {
+
+        foreach($this->getIterator($includeHidden) as $column) {
+
+            if($column->getAggregation()) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
     /**
@@ -25,7 +150,7 @@ class ColumnList implements \ArrayAccess, \Countable, \IteratorAggregate {
     /**
      * @param bool $includeHidden
      *
-     * @return \ArrayIterator
+     * @return ColumnListIterator
      */
     public function getIterator($includeHidden = false) {
 
@@ -34,62 +159,20 @@ class ColumnList implements \ArrayAccess, \Countable, \IteratorAggregate {
 
 
     /**
-     * @param int $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset) {
-
-        return isset($this->columns[$offset]);
-    }
-
-
-    /**
-     * @param int $offset
+     * @param string $identifier
      *
      * @return AbstractColumn
-     * @throws Exception
      */
-    public function offsetGet($offset) {
+    public function getByIdentifier($identifier) {
 
-        if(!isset($this->columns[$offset])) {
+        foreach($this->columns as $column) {
 
-            throw new Exception("Trying to get column by non-existing offset.");
+            if($column->getIdentifier() == $identifier) {
+
+                return $column;
+            }
         }
 
-        return $this->columns[$offset];
-    }
-
-
-    /**
-     * @param int $offset
-     * @param AbstractColumn $value
-     *
-     * @throws Exception
-     */
-    public function offsetSet($offset, $value) {
-
-        if(!($value instanceof AbstractColumn)) {
-
-            throw new Exception("Trying to add invalid column.");
-        }
-
-        $this->columns[$offset] = $value;
-    }
-
-
-    /**
-     * @param int $offset
-     *
-     * @throws Exception
-     */
-    public function offsetUnset($offset) {
-
-        if(!isset($this->columns[$offset])) {
-
-            throw new Exception("Trying to remove column by non-existing index.");
-        }
-
-        unset($this->columns[$offset]);
+        return null;
     }
 }

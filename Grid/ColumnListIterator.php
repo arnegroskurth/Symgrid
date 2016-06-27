@@ -31,13 +31,27 @@ class ColumnListIterator implements \Countable, \Iterator {
 
         $this->columns = $columns;
 
-        foreach($columns as $key => $column) {
+        $this->saveOffsets($includeHidden);
+    }
 
-            if($includeHidden || $column->isDisplayed()) {
 
-                $this->offsets[] = $key;
-            }
-        }
+    /**
+     * Sorts columns by data path.
+     *
+     * @param bool $includeHidden
+     * 
+     * @return ColumnListIterator
+     */
+    public function sortByDataPath($includeHidden = false) {
+
+        usort($this->columns, function(AbstractColumn $a, AbstractColumn $b) {
+
+            return strcmp($a->getDataPath(), $b->getDataPath());
+        });
+
+        $this->saveOffsets($includeHidden);
+
+        return $this;
     }
 
 
@@ -89,5 +103,22 @@ class ColumnListIterator implements \Countable, \Iterator {
     public function valid() {
 
         return $this->position < $this->count();
+    }
+
+
+    /**
+     * Saves indizes of columns that match filter criteria for iteration.
+     *
+     * @param bool $includeHidden
+     */
+    protected function saveOffsets($includeHidden) {
+
+        foreach($this->columns as $key => $column) {
+
+            if($includeHidden || $column->isDisplayed()) {
+
+                $this->offsets[] = $key;
+            }
+        }
     }
 }

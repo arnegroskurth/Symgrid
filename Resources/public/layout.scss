@@ -1,0 +1,26 @@
+
+.symgrid {
+
+  .error-message {
+    display: none;
+  }
+  &.with-error .error-message {
+    display: block;
+  }
+
+
+  table {
+    th.sortable a:hover:after { content: '↓'; }
+    th.order-asc a:after { content: '↓'; }
+    th.order-asc a:hover:after { content: '↑'; }
+    th.order-desc a:after { content: '↑'; }
+    th.order-desc a:hover:after { content: '↓'; }
+  }
+
+  .loading-indicator {
+    display: none;
+  }
+  &.loading .loading-indicator {
+    display: initial;
+  }
+}

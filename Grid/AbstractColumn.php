@@ -5,6 +5,9 @@ namespace ArneGroskurth\Symgrid\Grid;
 
 abstract class AbstractColumn {
 
+    use DataPathTrait;
+
+
     /**
      * @var string
      */
@@ -36,6 +39,11 @@ abstract class AbstractColumn {
     protected $sortable = true;
 
     /**
+     * @var bool
+     */
+    protected $filterable = true;
+
+    /**
      * @var string
      */
     protected $filter;
@@ -64,8 +72,8 @@ abstract class AbstractColumn {
      */
     public function __construct($title, $dataPath = null) {
 
-        $this->title = $title;
-        $this->dataPath = $dataPath;
+        $this->setTitle($title);
+        $this->setDataPath($dataPath);
     }
 
     /**
@@ -91,17 +99,39 @@ abstract class AbstractColumn {
     /**
      * @return string
      */
+    public function getIdentifier() {
+
+        return preg_replace('/[^a-z0-9_\-]/i', '_', $this->title);
+    }
+
+    /**
+     * @return string
+     */
     public function getDataPath() {
 
         return $this->dataPath;
     }
 
     /**
+     * @return bool
+     */
+    public function isNestedDataPath() {
+
+        return $this->isNestedPath($this->dataPath);
+    }
+
+    /**
      * @param string $dataPath
      *
-     * @return AbstractColumn
+     * @return $this
+     * @throws Exception
      */
     public function setDataPath($dataPath) {
+
+        if($dataPath && !$this->isValidPath($dataPath)) {
+
+            throw new Exception("Invalid data path given.");
+        }
 
         $this->dataPath = $dataPath;
 
@@ -174,6 +204,62 @@ abstract class AbstractColumn {
     public function getFilter() {
 
         return $this->filter;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterDateExact() {
+
+        return $this->filter == Constants::FILTER_DATE_EXACT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterDateRange() {
+
+        return $this->filter == Constants::FILTER_DATE_RANGE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterNumericExact() {
+
+        return $this->filter == Constants::FILTER_NUMERIC_EXACT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterNumericRange() {
+
+        return $this->filter == Constants::FILTER_NUMERIC_RANGE;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterSelect() {
+
+        return $this->filter == Constants::FILTER_SELECT;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterStringContains() {
+
+        return $this->filter == Constants::FILTER_STRING_CONTAINS;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFilterStringExact() {
+
+        return $this->filter == Constants::FILTER_STRING_EXACT;
     }
 
     /**
@@ -268,15 +354,126 @@ abstract class AbstractColumn {
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isFilterable() {
+
+        return $this->filterable;
+    }
 
     /**
-     * @param AbstractDataSource $data
+     * @param boolean $filterable
+     *
+     * @return AbstractColumn
+     */
+    public function setFilterable($filterable) {
+
+        $this->filterable = $filterable;
+
+        return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getTypeName() {
+
+        return lcfirst(preg_replace('/.*\\\\([a-z]+)Column/i', '$1', get_class($this)));
+    }
+
+
+    /**
+     * @return string[]
+     */
+    public function getClasses() {
+
+        $classes = array();
+
+        if($type = $this->getTypeName()) {
+
+            $classes[] = $type;
+        }
+
+        if($this->isSortable()) {
+
+            $classes[] = 'sortable';
+        }
+
+        if($this->getFilter()) {
+
+            $classes[] = 'has-filter';
+            $classes[] = sprintf('filter-%s', $this->getFilter());
+        }
+
+        if($this->getCustomElementClass()) {
+
+            $classes[] = $this->getCustomElementClass();
+        }
+
+        return $classes;
+    }
+
+
+    /**
+     * @param DataRecord $dataRecord
+     * @param string $target
+     *
+     * @return string
+     * @throws Exception
+     */
+    public function render(DataRecord $dataRecord, $target = Constants::TARGET_HTML) {
+
+        $value = $dataRecord->getValueByPath($this->dataPath);
+
+        if($this->isNestedDataPath()) {
+
+            return $this->renderValues(is_null($value) ? array() : $value, $target);
+        }
+
+        return $this->renderValue($value, $target);
+    }
+
+
+    /**
+     * @param $value
+     * @param string $target
+     *
+     * @throws Exception
+     * @return string
+     */
+    public function renderValue($value, $target = Constants::TARGET_HTML) {
+
+        if(!is_null($value) && !is_scalar($value)) {
+
+            throw new Exception(sprintf("Cannot render value of type '%s'.", gettype($value)));
+        }
+
+        return is_null($value) ? null : strval($value);
+    }
+
+
+    /**
+     * @param array $values
      * @param string $target
      *
      * @return string
      */
-    public function render(AbstractDataSource $data, $target = \ArneGroskurth\Symgrid\TARGET_HTML) {
+    public function renderValues(array $values, $target = Constants::TARGET_HTML) {
 
-        return $data->current()->getValueByPath($this->dataPath);
+        $return = array();
+
+        foreach($values as $value) {
+
+            $rendered = $this->renderValue($value, $target);
+
+            if(is_string($rendered) && !empty($rendered)) {
+
+                $return[] = $rendered;
+            }
+        }
+
+        return empty($return) ? null : implode(', ', $return);
     }
 }

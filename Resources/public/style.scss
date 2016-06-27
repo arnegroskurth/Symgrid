@@ -1,0 +1,40 @@
+
+.symgrid {
+
+  table {
+
+    border-collapse: collapse;
+
+    th, td {
+      padding: 3px;
+      border: 1px solid #ddd;
+    }
+  }
+
+  input[type=search], input[type=text] {
+    background-color: white;
+    border: 1px solid #cccccc;
+    box-shadow: 0 1px 2px #eeeeee inset;
+    padding: 2px;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border: 1px solid #4D90FE;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+    }
+  }
+
+  button, input[type=button], input[type=submit], input[type=reset] {
+    border-radius: 2px 2px 2px 2px;
+    border: 1px solid #D3D3D3;
+    padding: 1px 10px;
+    background-color: #F8F8F8;
+    background-image: linear-gradient(to bottom, #FCFCFC 0px, #F8F8F8 100%);
+    color: black;
+  }
+
+  .loading-indicator img {
+    height: 1em;
+    vertical-align: top;
+  }
+}

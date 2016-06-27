@@ -1,0 +1,12 @@
+
+services:
+
+  arnegroskurth_symgrid.twig_extension:
+    class:      ArneGroskurth\Symgrid\Twig\SymgridExtension
+    public:     false
+    tags:
+      -: { name: twig.extension }
+
+  arnegroskurth_symgrid.grid:
+    class:      ArneGroskurth\Symgrid\Grid\Grid
+    arguments:  ["@service_container"]

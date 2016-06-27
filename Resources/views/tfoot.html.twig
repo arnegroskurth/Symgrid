@@ -1,0 +1,78 @@
+
+<tfoot>
+
+    {% if grid.columnList.hasAggregatableColumns %}
+        <tr class="aggregations">
+            {% if grid.groupActions %}
+                <td class="row-select">&nbsp;</td>
+            {% endif %}
+
+            {% for column in grid.columnList %}
+                {% if column.aggregation %}
+                    <td class="aggregation aggregation-{{ column.aggregation }} {{ column.classes|join(' ') }}"></td>
+                {% else %}
+                    <td>&nbsp;</td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endif %}
+
+    <tr class="toolbar">
+
+        {% if grid.groupActions %}
+            <td class="row-select">&nbsp;</td>
+        {% endif %}
+
+        <td colspan="{{ grid.columnList.count }}" class="toolbar-items">
+
+            <span class="count">
+                Count: {{ grid.dataSource.totalCount }}
+                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> displayed){% endif %}
+            </span>
+
+            {% if grid.pageable %}
+            <span class="page">
+                Page:
+                <label for="symgrid-{{ grid.identifier}}-page">
+                    <select id="symgrid-{{ grid.identifier}}-page" name="_page">
+                        {% for page in 1..grid.pageCount %}
+                            <option {% if page == grid.currentPage %}selected{% endif %}>{{ page }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </span>
+            {% endif %}
+
+            {% if grid.exportable %}
+                <span class="export">
+                    <input type="button" name="_export" value="CSV" />
+                    <input type="button" name="_export" value="Excel" />
+                    <input type="button" name="_export" value="HTML" />
+                    <input type="button" name="_export" value="PDF" />
+                </span>
+            {% endif %}
+
+            {% if grid.groupActions %}
+                <span class="groupActions">
+                    <label for="symgrid-{{ grid.identifier}}-groupActions">
+                        <select id="symgrid-{{ grid.identifier}}-groupActions" name="_groupAction">
+                            <option selected></option>
+                            {% for groupAction in grid.groupActions %}
+                                <option data-target-url="{% if groupAction.targetUrl %}{{ groupAction.targetUrl }}{% elseif groupAction.targetAction %}{{ url(groupAction.targetAction) }}{% endif %}" data-parameter-name="{{ groupAction.parameterName }}" data-target="{{ groupAction.target }}" data-message="{{ groupAction.confirmationMessage }}" data-method="{{ groupAction.method }}" data-parameter-name="{{ groupAction.parameterName }}">{{ groupAction.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                </span>
+            {% endif %}
+
+            <span class="submit">
+                <input type="submit" value="Apply" />
+                <input type="reset" value="Reset" />
+            </span>
+
+            <span class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="Loading" /> Loading...</span>
+
+        </td>
+    </tr>
+
+</tfoot>
