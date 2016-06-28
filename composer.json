@@ -1,7 +1,15 @@
 {
-  "name": "Symgrid",
+  "name": "arne-groskurth/symgrid",
   "description": "Symgrid is a Symfony3 data grid bundle.",
+  "keywords": ["symfony", "grid"],
   "type": "symfony-bundle",
+  "homepage": "https://github.com/arnegroskurth/Symgrid",
+  "authors": [
+    {
+      "name": "Arne Groskurth",
+      "email": "arne@arne-groskurth.de"
+    }
+  ],
   "license": "MIT",
   "require": {
     "php": ">=5.4.0",
