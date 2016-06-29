@@ -664,12 +664,12 @@ class Grid {
 
                     switch(strtolower($format)) {
 
-                        case 'csv': $export = new CSVExport($this->container, $this); break;
-                        case 'excel': $export = new ExcelExport($this->container, $this); break;
-                        case 'html': $export = new HTMLExport($this->container, $this); break;
-                        case 'pdf': $export = new PDFExport($this->container, $this); break;
+                        case Constants::TARGET_CSV: $export = new CSVExport($this->container, $this); break;
+                        case Constants::TARGET_EXCEL: $export = new ExcelExport($this->container, $this); break;
+                        case Constants::TARGET_HTML: $export = new HTMLExport($this->container, $this); break;
+                        case Constants::TARGET_PDF: $export = new PDFExport($this->container, $this); break;
 
-                        default: throw new BadRequestHttpException();
+                        default: throw new BadRequestHttpException('Unknown export format requested.');
                     }
 
                     return $export->render();
@@ -706,7 +706,7 @@ class Grid {
                     $responseData['table'] = $this->getTwig()->render('ArneGroskurthSymgridBundle::table.html.twig', array('grid' => $this));
                 }
 
-                else throw new BadRequestHttpException();
+                else throw new BadRequestHttpException('Unknown grid part requested.');
             }
 
             return new JsonResponse($responseData);
