@@ -26,13 +26,13 @@
         <td colspan="{{ grid.columnList.count }}" class="toolbar-items">
 
             <span class="count">
-                Count: {{ grid.dataSource.totalCount }}
-                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> displayed){% endif %}
+                {{ "Count"|trans }}: {{ grid.dataSource.totalCount }}
+                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "displayed"|trans }}){% endif %}
             </span>
 
             {% if grid.pageable %}
             <span class="page">
-                Page:
+                {{ "Page"|trans }}:
                 <label for="symgrid-{{ grid.identifier}}-page">
                     <select id="symgrid-{{ grid.identifier}}-page" name="_page">
                         {% for page in 1..grid.pageCount %}
@@ -58,7 +58,7 @@
                         <select id="symgrid-{{ grid.identifier}}-groupActions" name="_groupAction">
                             <option selected></option>
                             {% for groupAction in grid.groupActions %}
-                                <option data-target-url="{% if groupAction.targetUrl %}{{ groupAction.targetUrl }}{% elseif groupAction.targetAction %}{{ url(groupAction.targetAction) }}{% endif %}" data-parameter-name="{{ groupAction.parameterName }}" data-target="{{ groupAction.target }}" data-message="{{ groupAction.confirmationMessage }}" data-method="{{ groupAction.method }}" data-parameter-name="{{ groupAction.parameterName }}">{{ groupAction.title }}</option>
+                                <option data-target-url="{% if groupAction.targetUrl %}{{ groupAction.targetUrl }}{% elseif groupAction.targetAction %}{{ url(groupAction.targetAction) }}{% endif %}" data-parameter-name="{{ groupAction.parameterName }}" data-target="{{ groupAction.target }}" data-message="{{ groupAction.confirmationMessage|trans }}" data-method="{{ groupAction.method }}" data-parameter-name="{{ groupAction.parameterName }}">{{ groupAction.title|trans }}</option>
                             {% endfor %}
                         </select>
                     </label>
@@ -66,11 +66,11 @@
             {% endif %}
 
             <span class="submit">
-                <input type="submit" value="Apply" />
-                <input type="reset" value="Reset" />
+                <input type="submit" value="{{ "Apply"|trans }}" />
+                <input type="reset" value="{{ "Reset"|trans }}" />
             </span>
 
-            <span class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="Loading" /> Loading...</span>
+            <span class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="Loading" /> {{ "Loading"|trans }}...</span>
 
         </td>
     </tr>

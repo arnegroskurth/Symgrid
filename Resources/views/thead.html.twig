@@ -8,9 +8,9 @@
         {% for column in grid.columnList %}
             <th class="{{ column.classes|join(' ') }}" data-column="{{ column.identifier }}" data-path="{{ column.dataPath }}" {% if column.headerTooltip %}data-tooltip="{{ column.headerTooltip }}"{% endif %}>
                 {% if grid.sortable and column.sortable %}
-                    <a class="sort" href="#">{{ column.title }}</a>
+                    <a class="sort" href="#">{{ column.title|trans }}</a>
                 {% else %}
-                    {{ column.title }}
+                    {{ column.title|trans }}
                 {% endif %}
             </th>
         {% endfor %}
@@ -57,12 +57,12 @@
                             <option></option>
 
                             {% if column.filterNullable %}
-                                <option value="null">Is not defined</option>
+                                <option value="null">{{ "Is not defined"|trans }}</option>
                             {% endif %}
 
-                            <optgroup label="Values">
+                            <optgroup label="{{ "Values"|trans }}">
                                 {% for value, alias in column.aliases %}
-                                    <option value="{{ value }}">{{ alias }}</option>
+                                    <option value="{{ value }}">{{ alias|trans }}</option>
                                 {% endfor %}
                             </optgroup>
                         </select>
@@ -81,8 +81,8 @@
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null">
                         <select class="filter" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null" name="_filter[{{ column.identifier }}][null]">
                             <option></option>
-                            <option value="yes">Empty</option>
-                            <option value="no">Not empty</option>
+                            <option value="yes">{{ "Empty"|trans }}</option>
+                            <option value="no">{{ "Not empty"|trans }}</option>
                         </select>
                     </label>
                 {% endif %}

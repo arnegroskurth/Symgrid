@@ -15,8 +15,8 @@ class BoolColumn extends AliasColumn {
     public function __construct($title, $dataPath) {
 
         parent::__construct($title, $dataPath, array(
-            true => 'Ja',
-            false => 'Nein'
+            true => 'Yes',
+            false => 'No'
         ));
     }
 }
