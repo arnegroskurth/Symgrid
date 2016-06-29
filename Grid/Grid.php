@@ -2,10 +2,10 @@
 
 namespace ArneGroskurth\Symgrid\Grid;
 
-use ArneGroskurth\Symgrid\Export\CSVExport;
-use ArneGroskurth\Symgrid\Export\ExcelExport;
-use ArneGroskurth\Symgrid\Export\HTMLExport;
-use ArneGroskurth\Symgrid\Export\PDFExport;
+use ArneGroskurth\Symgrid\Grid\Export\CSVExport;
+use ArneGroskurth\Symgrid\Grid\Export\ExcelExport;
+use ArneGroskurth\Symgrid\Grid\Export\HTMLExport;
+use ArneGroskurth\Symgrid\Grid\Export\PDFExport;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -664,10 +664,10 @@ class Grid {
 
                     switch(strtolower($format)) {
 
-                        case 'csv': $export = new CSVExport($this); break;
-                        case 'excel': $export = new ExcelExport($this); break;
-                        case 'html': $export = new HTMLExport($this); break;
-                        case 'pdf': $export = new PDFExport($this); break;
+                        case 'csv': $export = new CSVExport($this->container, $this); break;
+                        case 'excel': $export = new ExcelExport($this->container, $this); break;
+                        case 'html': $export = new HTMLExport($this->container, $this); break;
+                        case 'pdf': $export = new PDFExport($this->container, $this); break;
 
                         default: throw new BadRequestHttpException();
                     }
