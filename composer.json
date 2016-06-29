@@ -13,7 +13,7 @@
   "license": "MIT",
   "require": {
     "php": ">=5.4.0",
-    "symfony/smfony": "~3.2",
+    "symfony/symfony": "~3.2",
     "twig/twig": "~1.24"
   },
   "autoload": {
