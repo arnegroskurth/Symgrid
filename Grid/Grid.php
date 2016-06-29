@@ -229,7 +229,7 @@ class Grid {
      */
     public function isSortable() {
 
-        return $this->sortable && (!$this->dataSource || $this->dataSource->isSortable());
+        return $this->sortable;
     }
 
     /**
@@ -249,7 +249,7 @@ class Grid {
      */
     public function isFilterable() {
 
-        return $this->filterable && (!$this->dataSource || $this->dataSource->isFilterable());
+        return $this->filterable;
     }
 
     /**
@@ -693,17 +693,17 @@ class Grid {
 
                 if($requestedPart == 'tbody') {
 
-                    $responseData['tbody'] = $this->getTemplatingEngine()->render('ArneGroskurthSymgridBundle::tbody.html.twig', array('grid' => $this));
+                    $responseData['tbody'] = $this->getTwig()->render('ArneGroskurthSymgridBundle::tbody.html.twig', array('grid' => $this));
                 }
 
                 elseif($requestedPart == 'tfoot') {
 
-                    $responseData['tfoot'] = $this->getTemplatingEngine()->render('ArneGroskurthSymgridBundle::tfoot.html.twig', array('grid' => $this));
+                    $responseData['tfoot'] = $this->getTwig()->render('ArneGroskurthSymgridBundle::tfoot.html.twig', array('grid' => $this));
                 }
 
                 elseif($requestedPart == 'table') {
 
-                    $responseData['table'] = $this->getTemplatingEngine()->render('ArneGroskurthSymgridBundle::table.html.twig', array('grid' => $this));
+                    $responseData['table'] = $this->getTwig()->render('ArneGroskurthSymgridBundle::table.html.twig', array('grid' => $this));
                 }
 
                 else throw new BadRequestHttpException();
@@ -731,7 +731,7 @@ class Grid {
             return $gridResponse;
         }
 
-        return $this->getTemplatingEngine()->renderResponse($view, $parameters, $response);
+        return $this->getTwig()->renderResponse($view, $parameters, $response);
     }
 
 
@@ -759,7 +759,7 @@ class Grid {
      * @return \Symfony\Bundle\TwigBundle\TwigEngine
      * @throws Exception
      */
-    protected function getTemplatingEngine() {
+    protected function getTwig() {
 
         if(!$this->container->has('templating')) {
 

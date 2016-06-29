@@ -38,15 +38,11 @@ abstract class AbstractDataSource {
 
 
     /**
+     * Generates a list of columns from the data structure.
+     * 
      * @return ColumnList List of columns deduced from data source.
      */
-    abstract public function generateColumnList();
-
-
-    /**
-     * @return bool Whether this data source can be ordered.
-     */
-    abstract public function isSortable();
+    abstract public function getColumnList();
 
 
     /**
@@ -61,12 +57,6 @@ abstract class AbstractDataSource {
      * @return DataOrder
      */
     abstract public function getAppliedOrder();
-
-
-    /**
-     * @return bool Whether this data source can be applied filters on.
-     */
-    abstract public function isFilterable();
 
 
     /**

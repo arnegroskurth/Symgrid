@@ -2,11 +2,10 @@
 
 namespace ArneGroskurth\Symgrid\Grid\DataSource;
 
-
 use ArneGroskurth\Symgrid\Grid\DataRecord;
 
 
-class EntityDataSourceIterator extends \IteratorIterator {
+class DataRecordWrappingIterator extends \IteratorIterator {
 
     /**
      * @var string
@@ -15,7 +14,7 @@ class EntityDataSourceIterator extends \IteratorIterator {
 
 
     /**
-     * EntityDataSourceIterator constructor.
+     * DataRecordWrappingIterator constructor.
      *
      * @param \Traversable $iterator
      * @param string $idPath

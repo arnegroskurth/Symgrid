@@ -88,12 +88,9 @@ class ArrayDataSource extends AbstractDataSource implements \Iterator {
     }
 
     /**
-    * Generates a list of columns from the data structure.
-    *
-    * @return ColumnList
-    * @throws Exception
+    * {@inheritdoc}
     */
-    public function generateColumnList() {
+    public function getColumnList() {
 
         if(empty($this->loadPage(1, 1))) {
 

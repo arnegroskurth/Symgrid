@@ -2,16 +2,12 @@
 
 namespace ArneGroskurth\Symgrid\Grid\DataSource;
 
-use ArneGroskurth\Symgrid\Grid\AbstractDataSource;
 use ArneGroskurth\Symgrid\Grid\Column\BoolColumn;
 use ArneGroskurth\Symgrid\Grid\Column\DateColumn;
 use ArneGroskurth\Symgrid\Grid\Column\DateTimeColumn;
 use ArneGroskurth\Symgrid\Grid\Column\NumericColumn;
 use ArneGroskurth\Symgrid\Grid\Column\StringColumn;
 use ArneGroskurth\Symgrid\Grid\ColumnList;
-use ArneGroskurth\Symgrid\Grid\Constants;
-use ArneGroskurth\Symgrid\Grid\DataFilter;
-use ArneGroskurth\Symgrid\Grid\DataOrder;
 use ArneGroskurth\Symgrid\Grid\DataPathTrait;
 use ArneGroskurth\Symgrid\Grid\Exception;
 use Doctrine\DBAL\Types\Type;
@@ -20,7 +16,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
-class EntityDataSource extends AbstractDataSource implements \IteratorAggregate {
+class EntityDataSource extends QueryBuilderDataSource {
 
     use DataPathTrait;
 
@@ -36,44 +32,14 @@ class EntityDataSource extends AbstractDataSource implements \IteratorAggregate 
     protected $rootClassName;
 
     /**
-     * @var string
+     * @var ColumnList
      */
-    protected $idPath;
-
-    /**
-     * @var DataOrder
-     */
-    protected $order;
-
-    /**
-     * @var DataFilter[]
-     */
-    protected $filters = array();
+    protected $columnList;
 
     /**
      * @var string[]
      */
     protected $classNames = array();
-
-    /**
-     * @var Paginator
-     */
-    protected $paginator;
-
-    /**
-     * @var EntityDataSourceIterator
-     */
-    protected $iterator;
-
-    /**
-     * @var int
-     */
-    protected $totalCount;
-
-    /**
-     * @var int
-     */
-    protected $loadedCount;
 
 
     /**
@@ -102,36 +68,49 @@ class EntityDataSource extends AbstractDataSource implements \IteratorAggregate 
             throw new Exception("Symgrid does not support multi-column keys.");
         }
 
-        $this->idPath = $rootClassMetadata->identifier[0];
+
+        parent::__construct($this->createQueryBuilder($this->getColumnList()), $rootClassMetadata->identifier[0]);
     }
 
 
     /**
      * {@inheritdoc}
      */
-    public function isFilterable() {
+    public function load(ColumnList $columnList = null) {
 
-        return true;
+        $this->paginator = new Paginator($this->getQueryBuilder());
+
+        return $this->getTotalCount();
     }
 
 
     /**
      * {@inheritdoc}
      */
-    public function isSortable() {
+    public function loadPage($page, $recordsPerPage, ColumnList $columnList = null) {
 
-        return true;
+        $queryBuilder = $this->getQueryBuilder()
+            ->setFirstResult($recordsPerPage * ($page - 1))
+            ->setMaxResults($recordsPerPage);
+
+        $this->paginator = new Paginator($queryBuilder);
+
+        return $this->getLoadedCount();
     }
 
 
     /**
      * {@inheritdoc}
      */
-    public function generateColumnList() {
+    public function getColumnList() {
 
-        $this->classNames = array();
+        if(is_null($this->columnList)) {
 
-        return $this->getColumnsByClassName($this->rootClassName);
+            $this->classNames = array();
+            $this->columnList = $this->getColumnsByClassName($this->rootClassName);
+        }
+
+        return $this->columnList;
     }
 
 
@@ -215,48 +194,12 @@ class EntityDataSource extends AbstractDataSource implements \IteratorAggregate 
 
 
     /**
-     * {@inheritdoc}
-     */
-    public function load(ColumnList $columnList = null) {
-
-        if(is_null($columnList)) {
-
-            throw new Exception("Trying to load data without column list.");
-        }
-
-        $this->paginator = new Paginator($this->createQueryBuilder($columnList));
-
-        return $this->getTotalCount();
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loadPage($page, $recordsPerPage, ColumnList $columnList = null) {
-
-        if(is_null($columnList)) {
-
-            throw new Exception("Trying to load data without column list.");
-        }
-
-        $queryBuilder = $this->createQueryBuilder($columnList)
-            ->setFirstResult($recordsPerPage * ($page - 1))
-            ->setMaxResults($recordsPerPage);
-
-        $this->paginator = new Paginator($queryBuilder);
-
-        return $this->getLoadedCount();
-    }
-
-
-    /**
      * @param ColumnList $columnList
      *
      * @throws Exception
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createQueryBuilder(ColumnList $columnList) {
+    protected function createQueryBuilder(ColumnList $columnList) {
 
         $queryBuilder = $this->entityManager->createQueryBuilder()
             ->select($this->getRootAlias())
@@ -285,173 +228,7 @@ class EntityDataSource extends AbstractDataSource implements \IteratorAggregate 
             }
         }
 
-        if($this->order) {
-
-            $queryBuilder->orderBy($this->getDirectAccessAlias($this->order->getPath()), $this->order->getDirection());
-        }
-
-        foreach($this->filters as $filterIndex => $filter) {
-
-            $path = $this->getDirectAccessAlias($filter->getPath());
-            $parameterName = sprintf(":filterParameter%d", $filterIndex);
-
-            $value = $filter->getValue();
-            $setParameterValue = true;
-
-            switch($filter->getKeyword()) {
-
-                case Constants::FILTER_KEYWORD_AFTER: $expression = "{$path} >= {$parameterName}"; $value = (new \DateTime($value))->format("Y-m-d"); break;
-                case Constants::FILTER_KEYWORD_BEFORE: $expression = "{$path} <= {$parameterName}"; $value = (new \DateTime($value))->format("Y-m-d"); break;
-                case Constants::FILTER_KEYWORD_CONTAINS: $expression = "{$path} LIKE {$parameterName}"; $value = "%{$value}%"; break;
-                case Constants::FILTER_KEYWORD_EQUALS: $expression = "{$path} = {$parameterName}"; break;
-                case Constants::FILTER_KEYWORD_NULL: $expression = $path . ' ' . ($value == 'yes' ? 'IS NULL' : 'IS NOT NULL'); $setParameterValue = false; break;
-                case Constants::FILTER_KEYWORD_MIN: $expression = "{$path} >= {$parameterName}"; break;
-                case Constants::FILTER_KEYWORD_MAX: $expression = "{$path} <= {$parameterName}"; break;
-
-                case Constants::FILTER_KEYWORD_IN:
-
-                    $values = explode(',', $value);
-                    $includesNull = in_array('null', $values);
-                    $setParameterValue = false;
-
-                    if($includesNull) {
-
-                        $values = array_diff($values, array('null'));
-                    }
-
-                    $expressions = array();
-
-                    if(!empty($values)) {
-
-                        $expressions[] = sprintf("{$path} IN (%s)", implode(',', $values));
-                    }
-
-                    if($includesNull) {
-
-                        $expressions[] = "{$path} IS NULL";
-                    }
-
-                    $expression = implode(' OR ', $expressions);
-
-                    break;
-
-                default: throw new Exception("Unknown filter keyword.");
-            }
-
-            $queryBuilder->andWhere($expression);
-
-            if($setParameterValue) {
-                $queryBuilder->setParameter($parameterName, $value);
-            }
-        }
-
         return $queryBuilder;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalCount(ColumnList $columnList = null) {
-
-        if(is_null($this->totalCount)) {
-
-            if(is_null($this->paginator)) {
-
-                throw new Exception();
-            }
-
-            $this->totalCount = count($this->paginator);
-        }
-
-        return $this->totalCount;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLoadedCount() {
-
-        if(is_null($this->loadedCount)) {
-
-            if(is_null($this->paginator)) throw new Exception();
-
-            $this->loadedCount = $this->paginator->getIterator()->count();
-        }
-
-        return $this->loadedCount;
-    }
-
-
-    /**
-     * @return \Traversable
-     */
-    public function getIterator() {
-
-        if(is_null($this->iterator)) {
-
-            $this->iterator = new EntityDataSourceIterator($this->paginator->getIterator(), $this->idPath);
-        }
-
-        return $this->iterator;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyOrder(DataOrder $dataOrder = null) {
-
-        $this->order = $dataOrder;
-
-        $this->invalidateCaches();
-
-        return $this;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAppliedOrder() {
-
-        return $this->order;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilter(DataFilter $dataFilter) {
-
-        $this->filters[] = $dataFilter;
-
-        $this->invalidateCaches();
-
-        return $this;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAppliedFilters() {
-
-        return $this->filters;
-    }
-
-
-    /**
-     * @return $this
-     */
-    public function invalidateCaches() {
-
-        $this->iterator = null;
-        $this->totalCount = null;
-        $this->loadedCount = null;
-
-        return $this;
     }
 
 
@@ -468,23 +245,12 @@ class EntityDataSource extends AbstractDataSource implements \IteratorAggregate 
 
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     protected function getRootAlias() {
 
         $parts = explode('\\', $this->rootClassName);
 
         return lcfirst($parts[count($parts) - 1]);
-    }
-
-
-    /**
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function getDirectAccessAlias($path) {
-
-        return trim($this->getPathFromParts($this->getLastPathParts(array_merge(array($this->getRootAlias()), $this->getPathParts($path)))), '*');
     }
 }
