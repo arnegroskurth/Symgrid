@@ -49,9 +49,6 @@
      */
     var Grid = function(container) {
 
-        var invalidBody, invalidFooter;
-
-
         /**
          * @returns string Grid title.
          */

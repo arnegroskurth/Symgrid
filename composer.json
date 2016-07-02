@@ -1,6 +1,6 @@
 {
   "name": "arne-groskurth/symgrid",
-  "description": "Symgrid is a Symfony3 data grid bundle.",
+  "description": "Symgrid is a Symfony data grid bundle.",
   "keywords": ["symfony", "grid"],
   "type": "symfony-bundle",
   "homepage": "https://github.com/arnegroskurth/Symgrid",
@@ -13,7 +13,8 @@
   "license": "MIT",
   "require": {
     "php": ">=5.4.0",
-    "symfony/symfony": "~3.2",
+    "symfony/symfony": "~2.4|~3.0",
+    "doctrine/orm": "~2.4",
     "twig/twig": "~1.24"
   },
   "autoload": {
