@@ -104,6 +104,11 @@ class Grid {
      */
     protected $rowClassCallback;
 
+    /**
+     * @var string[]
+     */
+    protected $customClasses = array();
+
 
     /**
      * Grid constructor.
@@ -503,12 +508,60 @@ class Grid {
     }
 
     /**
+     * @return \string[]
+     */
+    public function getCustomClasses() {
+
+        return $this->customClasses;
+    }
+
+    /**
+     * @param \string[] $customClasses
+     *
+     * @return Grid
+     */
+    public function setCustomClasses(array $customClasses) {
+
+        $this->customClasses = $customClasses;
+
+        return $this;
+    }
+
+    /**
+     * @param string $customClass
+     *
+     * @return $this
+     */
+    public function addCustomClass($customClass) {
+
+        $this->customClasses[] = $customClass;
+
+        return $this;
+    }
+
+    /**
+     * @param string $customClass
+     *
+     * @return $this
+     */
+    public function removeCustomClass($customClass) {
+
+        if(($key = array_search($customClass, $this->customClasses)) !== false) {
+
+            unset($this->customClasses[$key]);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string[] Classes to be applied to the symgrid container.
      */
     public function getClasses() {
 
-        $return = array('symgrid');
-
+        $return = $this->getCustomClasses();
+        $return[] = 'symgrid';
+        
         if($this->isAggregatable()) $return[] = 'aggregatable';
         if($this->isExportable()) $return[] = 'exportable';
         if($this->isFilterable()) $return[] = 'filterable';
@@ -713,6 +766,12 @@ class Grid {
         }
 
         return null;
+    }
+
+
+    public function getApiResponse() {
+
+        // todo: implement
     }
 
 
