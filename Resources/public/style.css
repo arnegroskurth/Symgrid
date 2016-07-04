@@ -1,4 +1,60 @@
+.symgrid.styled table {
+  border-collapse: collapse;
+  background-color: white;
+  font-family: sans-serif;
+  font-size: 13px; }
+.symgrid.styled th {
+  padding: 5px 3px;
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap; }
+  .symgrid.styled th a {
+    color: inherit;
+    text-decoration: none; }
+.symgrid.styled th.sortable a:hover {
+  text-decoration: underline; }
+.symgrid.styled th, .symgrid.styled td {
+  border: 1px solid #ddd; }
+.symgrid.styled tr.selected {
+  background-color: lightskyblue; }
+.symgrid.styled td {
+  padding: 3px; }
+.symgrid.styled input[type=search], .symgrid.styled input[type=text], .symgrid.styled input[type=date], .symgrid.styled input[type=number], .symgrid.styled input[type=email] {
+  background-color: white;
+  border: 1px solid #cccccc;
+  box-shadow: 0 1px 2px #eeeeee inset;
+  padding: 2px;
+  transition: border-color 0.2s ease; }
+  .symgrid.styled input[type=search]:focus, .symgrid.styled input[type=text]:focus, .symgrid.styled input[type=date]:focus, .symgrid.styled input[type=number]:focus, .symgrid.styled input[type=email]:focus {
+    border: 1px solid #4D90FE;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset; }
+.symgrid.styled input[type=number] {
+  -moz-appearance: textfield; }
+.symgrid.styled input[type=number]::-webkit-inner-spin-button,
+.symgrid.styled input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0; }
+.symgrid.styled button, .symgrid.styled input[type=button], .symgrid.styled input[type=submit], .symgrid.styled input[type=reset] {
+  border-radius: 2px 2px 2px 2px;
+  border: 1px solid #D3D3D3;
+  padding: 1px 10px;
+  background-color: #F8F8F8;
+  background-image: linear-gradient(to bottom, #FCFCFC 0px, #F8F8F8 100%);
+  color: black; }
+.symgrid.styled .filter.stringContains {
+  width: 50%;
+  min-width: 100px; }
+.symgrid.styled .filter.stringExact {
+  width: 100%;
+  max-width: 250px; }
+.symgrid.styled .filter.dateExact, .symgrid.styled .filter.dateRange {
+  width: 75px; }
+.symgrid.styled .filter.numericExact, .symgrid.styled .filter.numericRange {
+  width: 40px; }
+.symgrid.styled .loading-indicator img {
+  height: 1em;
+  vertical-align: top; }
 
-.symgrid {
-
-}
+/*# sourceMappingURL=style.css.map */
