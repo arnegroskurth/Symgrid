@@ -49,6 +49,26 @@
      */
     var Grid = function(container) {
 
+        var eventListeners = {
+            change: [],
+            rowClick: []
+        };
+
+
+        /**
+         * Calls all registered eventListeners on a given event.
+         *
+         * @param event
+         */
+        var callEventListeners = function(event) {
+
+            $.each(eventListeners[event], function(index, callback) {
+
+                callback();
+            });
+        };
+
+
         /**
          * @returns string Grid title.
          */
@@ -68,6 +88,59 @@
 
 
         /**
+         * @returns bool Whether this grid has selectable rows.
+         */
+        this.isSelectable = function() {
+
+            return $(container).hasClass('selectable');
+        };
+
+
+        /**
+         * Registers an event listener on a given event name.
+         *
+         * @param event Event name to bind callback to.
+         * @param fn Callback function.
+         * @returns {Grid}
+         */
+        this.on = function(event, fn) {
+
+            if(eventListeners[event] instanceof Array) {
+
+                eventListeners[event].push(fn);
+
+                this.setupEventHandlers();
+            }
+
+            return this;
+        };
+
+
+        /**
+         * Registers a callback function that gets called when the user clicks on a data row.
+         *
+         * @param fn Function to call on click on row.
+         * @returns {Grid}
+         */
+        this.onRowClick = function(fn) {
+
+            return this.on('rowClick', fn);
+        };
+
+
+        /**
+         * Registers a callback function that gets called when the grid is changed e.g. after a filter has been changed.
+         *
+         * @param fn Function to call when grid is changed.
+         * @returns {Grid}
+         */
+        this.onChange = function(fn) {
+
+            return this.on('change', fn);
+        };
+
+
+        /**
          * Sets up all event handlers for this grid.
          * This is triggered after the grid (or parts of it) are refreshed.
          *
@@ -80,6 +153,76 @@
 
                 e.preventDefault();
             });
+
+
+            // add class to row when selected for group action
+            $(container).find('.row-select input').off().click(function(e) {
+
+                $(this).closest('tr.data-row').toggleClass('selected');
+
+                // un-check all-rows-selectors
+                if(!this.checked) {
+                    $(this).closest('table').find('.row-select-all input').prop('checked', false);
+                }
+
+                e.stopPropagation();
+            });
+            $(container).find('.row-select').off().click(function(e) {
+
+                $(this).find('input').click();
+
+                e.stopPropagation();
+            });
+
+            // select all rows
+            $(container).find('.row-select-all input').off().click(function(e) {
+
+                var table = $(this).closest('table');
+                var dataRows = table.find('tr.data-row');
+
+                table.find('.row-select input').prop('checked', this.checked);
+
+                if(this.checked) {
+                    dataRows.addClass('selected');
+                }
+                else {
+                    dataRows.removeClass('selected');
+                }
+
+                e.stopPropagation();
+            });
+
+
+            // click somewhere on row
+            if(this.isSelectable() || eventListeners.rowClick.length > 0) {
+
+                // prevent click-event propagation for clickables in grid content
+                var tds = $(container).find('tbody td:not(.row-select)');
+                tds.find('a').off().click(function(e) { e.stopPropagation(); });
+                tds.find('input').off().click(function(e) { e.stopPropagation(); });
+                tds.find('button').off().click(function(e) { e.stopPropagation(); });
+
+                // setup custom callback
+                if(eventListeners.rowClick.length) {
+
+                    $.each(eventListeners.rowClick, function(index, callback) {
+
+                        $(container).find('tbody tr').click(callback);
+                    });
+                }
+
+                // setup row selection callback
+                else {
+
+                    $(container).find('tbody tr').click(function(e) {
+
+                        $(this).find('.row-select input').click();
+
+                        e.stopPropagation();
+                    });
+                }
+            }
+
 
             // filter update on liveupdateable grids
             $(container).filter('.liveupdateable').find('.filter').off().change(function() {
@@ -95,11 +238,13 @@
                 $(this).Symgrid().apply();
             });
 
+
             // export
             $(container).find('input[name=_export]').off().click(function() {
 
                 redirect(null, $(container).find('form').serialize() + '&_export=' + $(this).val() + '&' + window.location.search.slice(1));
             });
+
 
             // sorting
             $(container).filter('.sortable').find('thead .sort').off().click(function(e) {
@@ -116,14 +261,16 @@
 
                 e.preventDefault();
             });
-            
+
+
             // paging
             $(container).find('select[name=_page]').off().change(function() {
 
                 $(this).Symgrid().apply('tbody');
             });
 
-            // reset grid
+
+            // grid reset
             $(container).find('input[type=reset]').off().click(function(e) {
 
                 e.preventDefault();
@@ -137,6 +284,7 @@
 
                 $(this).Symgrid().apply('table');
             });
+
 
             return this;
         };
@@ -207,6 +355,8 @@
 
                     $(container).removeClass('with-error');
                     $(container).Symgrid().setupEventHandlers();
+
+                    callEventListeners('change');
                 },
 
                 complete: function() {

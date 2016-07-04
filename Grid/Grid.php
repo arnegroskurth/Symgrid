@@ -423,6 +423,14 @@ class Grid {
     }
 
     /**
+     * @return bool Whether this grid has any group actions.
+     */
+    public function hasGroupActions() {
+
+        return !empty($this->groupActions);
+    }
+
+    /**
      * @param string $title
      *
      * @return GroupAction
@@ -463,6 +471,14 @@ class Grid {
     public function getRowActions() {
 
         return $this->rowActions;
+    }
+
+    /**
+     * @return bool Whether this grid has any row actions.
+     */
+    public function hasRowActions() {
+
+        return !empty($this->rowActions);
     }
 
     /**
@@ -596,13 +612,17 @@ class Grid {
 
         $return = $this->getCustomClasses();
         $return[] = 'symgrid';
-        
+
+        if($this->hasGroupActions()) $return[] = 'with-group-actions';
+        if($this->hasRowActions()) $return[] = 'with-row-actions';
         if($this->isAggregatable()) $return[] = 'aggregatable';
         if($this->isExportable()) $return[] = 'exportable';
         if($this->isFilterable()) $return[] = 'filterable';
         if($this->isLiveUpdateable()) $return[] = 'liveupdateable';
         if($this->isPageable()) $return[] = 'pageable';
         if($this->isSortable()) $return[] = 'sortable';
+
+        if($this->hasGroupActions()) $return[] = 'selectable';
 
         return $return;
     }

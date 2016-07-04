@@ -2,7 +2,7 @@
 <tbody>
 
     {% for dataKey, dataRecord in grid.dataSource %}
-        <tr id="symgrid-{{ grid.identifier}}-row-{{ dataKey }}">
+        <tr id="symgrid-{{ grid.identifier}}-row-{{ dataKey }}" class="data-row">
 
             {% if grid.groupActions %}
                 <td class="row-select">

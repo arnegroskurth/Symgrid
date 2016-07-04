@@ -4,7 +4,11 @@
     {% if grid.columnList.hasAggregatableColumns %}
         <tr class="aggregations">
             {% if grid.groupActions %}
-                <td class="row-select">&nbsp;</td>
+                <td class="row-select row-select-all">
+                    <label for="symgrid-{{ grid.identifier}}-row-select-all-foot">
+                        <input type="checkbox" id="symgrid-{{ grid.identifier}}-row-select-all-foot" />
+                    </label>
+                </td>
             {% endif %}
 
             {% for column in grid.columnList %}
@@ -24,7 +28,15 @@
     <tr class="toolbar">
 
         {% if grid.groupActions %}
-            <td class="row-select">&nbsp;</td>
+            <td class="row-select row-select-all">
+                {% if grid.columnList.hasAggregatableColumns %}
+                    &nbsp;
+                {% else %}
+                    <label for="symgrid-{{ grid.identifier}}-row-select-all-foot">
+                        <input type="checkbox" id="symgrid-{{ grid.identifier}}-row-select-all-foot" />
+                    </label>
+                {% endif %}
+            </td>
         {% endif %}
 
         <td colspan="{{ grid.columnList.count }}" class="toolbar-items">

@@ -13,13 +13,14 @@ Symgrid is a Symfony data grid bundle inspired by the [APYDataGridBundle](https:
 - Automatic column type detection
 - Exportable to CSV, HTML, Excel and PDF
 - Mass actions
+- Row actions
 - REST API on data source
 - Generic filters on built in column types
 - Automatic Ajax refresh on filter(s) change
 - Row ordering
 - Pagination
 - Customizable twig templates
-- Row actions
+- JavaScript API for registration of event listeners
 
 
 ## Installation ##
@@ -37,7 +38,6 @@ composer require arne-groskurth/symgrid
 The Symgrid bundle needs to be registered as Symfony bundle:
 
 ```php
-<?php
 // app/AppKernel.php
 
 public function registerBundles() {
