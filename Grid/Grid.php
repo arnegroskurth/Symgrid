@@ -90,6 +90,11 @@ class Grid {
     protected $groupActions = array();
 
     /**
+     * @var RowAction[]
+     */
+    protected $rowActions = array();
+
+    /**
      * @var string
      */
     protected $jsCallbackOnLoad;
@@ -443,6 +448,36 @@ class Grid {
     public function addGroupAction(GroupAction $groupAction) {
 
         $this->groupActions[] = $groupAction;
+
+        usort($this->groupActions, function(GroupAction $lhs, GroupAction $rhs) {
+
+            return $lhs->getTitle() > $rhs->getTitle();
+        });
+
+        return $this;
+    }
+
+    /**
+     * @return RowAction[]
+     */
+    public function getRowActions() {
+
+        return $this->rowActions;
+    }
+
+    /**
+     * @param RowAction $rowAction
+     *
+     * @return $this
+     */
+    public function addRowAction(RowAction $rowAction) {
+
+        $this->rowActions[] = $rowAction;
+
+        usort($this->rowActions, function(RowAction $lhs, RowAction $rhs) {
+
+            return $lhs->getTitle() > $rhs->getTitle();
+        });
 
         return $this;
     }

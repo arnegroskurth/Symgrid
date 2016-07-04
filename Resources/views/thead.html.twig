@@ -14,6 +14,10 @@
                 {% endif %}
             </th>
         {% endfor %}
+
+        {% if grid.rowActions %}
+            <th class="row-actions">&nbsp;</th>
+        {% endif %}
     </tr>
 
 {% if grid.filterable and grid.columnList.hasFilterableColumns %}
@@ -89,6 +93,10 @@
 
             </th>
         {% endfor %}
+
+        {% if grid.rowActions %}
+            <th class="row-actions">&nbsp;</th>
+        {% endif %}
     </tr>
 {% endif %}
 

@@ -19,6 +19,14 @@
                 </td>
             {% endfor %}
 
+            {% if grid.rowActions %}
+                <td class="row-actions">
+                    {% for rowAction in grid.rowActions %}
+                        <a href="{% if rowAction.targetUrl %}{{ rowAction.targetUrl }}{% elseif rowAction.targetAction %}{{ url(rowAction.targetAction) }}{% endif %}?{{ rowAction.parameterName }}={{ dataRecord.id }}" target="{{ rowAction.target }}">{{ rowAction.title }}</a>
+                    {% endfor %}
+                </td>
+            {% endif %}
+
         </tr>
     {% endfor %}
 
