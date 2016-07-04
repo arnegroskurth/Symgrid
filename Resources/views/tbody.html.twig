@@ -22,7 +22,7 @@
             {% if grid.rowActions %}
                 <td class="row-actions">
                     {% for rowAction in grid.rowActions %}
-                        <a href="{% if rowAction.targetUrl %}{{ rowAction.targetUrl }}{% elseif rowAction.targetAction %}{{ url(rowAction.targetAction) }}{% endif %}?{{ rowAction.parameterName }}={{ dataRecord.id }}" target="{{ rowAction.target }}">{{ rowAction.title }}</a>
+                        <a href="{% if rowAction.targetUrl %}{{ rowAction.targetUrl }}{% elseif rowAction.targetAction %}{{ url(rowAction.targetAction) }}{% endif %}?{{ rowAction.parameterName }}={{ dataRecord.id }}" target="{{ rowAction.target }}">{{ rowAction.title|trans }}</a>
                     {% endfor %}
                 </td>
             {% endif %}
@@ -32,7 +32,7 @@
 
     {% if grid.totalDataCount < 1 %}
     <tr class="empty">
-        <td colspan="100%">{{ "No results"|trans }}...</td>
+        <td colspan="100%">{{ "data.empty"|trans }}</td>
     </tr>
     {% endif %}
 

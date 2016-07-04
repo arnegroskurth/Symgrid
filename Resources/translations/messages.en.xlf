@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="data.count">
+                <source>data.count</source>
+                <target>Count</target>
+            </trans-unit>
+            <trans-unit id="data.displayed">
+                <source>data.displayed</source>
+                <target>Displayed</target>
+            </trans-unit>
+            <trans-unit id="data.empty">
+                <source>data.empty</source>
+                <target>No results found</target>
+            </trans-unit>
+            <trans-unit id="data.export">
+                <source>data.export</source>
+                <target>Export</target>
+            </trans-unit>
+            <trans-unit id="data.page">
+                <source>data.page</source>
+                <target>Page</target>
+            </trans-unit>
+            <trans-unit id="error.general">
+                <source>error.general</source>
+                <target>Unfortunately an error occured during the loading of the grid content. Sorry!</target>
+            </trans-unit>
+            <trans-unit id="filter.apply">
+                <source>filter.apply</source>
+                <target>Apply</target>
+            </trans-unit>
+            <trans-unit id="filter.dateExact">
+                <source>filter.dateExact</source>
+                <target>Is</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.after">
+                <source>filter.dateRange.after</source>
+                <target>From</target>
+            </trans-unit>
+            <trans-unit id="filter.dateRange.before">
+                <source>filter.dateRange.before</source>
+                <target>To</target>
+            </trans-unit>
+            <trans-unit id="filter.notNull">
+                <source>filter.notNull</source>
+                <target>Not defined</target>
+            </trans-unit>
+            <trans-unit id="filter.null">
+                <source>filter.null</source>
+                <target>Defined</target>
+            </trans-unit>
+            <trans-unit id="filter.numericRange.min">
+                <source>filter.numericRange.min</source>
+                <target>Min</target>
+            </trans-unit>
+            <trans-unit id="filter.numericRange.max">
+                <source>filter.numericRange.max</source>
+                <target>Max</target>
+            </trans-unit>
+            <trans-unit id="filter.numericExact">
+                <source>filter.numericExact</source>
+                <target>Is</target>
+            </trans-unit>
+            <trans-unit id="filter.reset">
+                <source>filter.reset</source>
+                <target>Reset</target>
+            </trans-unit>
+            <trans-unit id="filter.select.values">
+                <source>filter.select.values</source>
+                <target>Values</target>
+            </trans-unit>
+            <trans-unit id="filter.string.contains">
+                <source>filter.string.contains</source>
+                <target>Contains</target>
+            </trans-unit>
+            <trans-unit id="filter.string.equals">
+                <source>filter.string.equals</source>
+                <target>Equals</target>
+            </trans-unit>
+            <trans-unit id="loading">
+                <source>loading</source>
+                <target>Loading</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

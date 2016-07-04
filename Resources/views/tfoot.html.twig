@@ -42,13 +42,13 @@
         <td colspan="{{ grid.columnList.count }}" class="toolbar-items">
 
             <span class="count">
-                {{ "Count"|trans }}: {{ grid.dataSource.totalCount }}
-                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "displayed"|trans }}){% endif %}
+                {{ "data.count"|trans }}: {{ grid.dataSource.totalCount }}
+                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "data.displayed"|trans }}){% endif %}
             </span>
 
             {% if grid.pageable %}
             <span class="page">
-                {{ "Page"|trans }}:
+                {{ "data.page"|trans }}:
                 <label for="symgrid-{{ grid.identifier}}-page">
                     <select id="symgrid-{{ grid.identifier}}-page" name="_page">
                         {% for page in 1..grid.pageCount %}
@@ -61,6 +61,7 @@
 
             {% if grid.exportable %}
                 <span class="export">
+                    {{ "data.export"|trans }}:
                     <input type="button" name="_export" value="CSV" />
                     <input type="button" name="_export" value="Excel" />
                     <input type="button" name="_export" value="HTML" />
@@ -74,7 +75,7 @@
                         <select id="symgrid-{{ grid.identifier}}-groupActions" name="_groupAction">
                             <option selected></option>
                             {% for groupAction in grid.groupActions %}
-                                <option data-target-url="{% if groupAction.targetUrl %}{{ groupAction.targetUrl }}{% elseif groupAction.targetAction %}{{ url(groupAction.targetAction) }}{% endif %}" data-parameter-name="{{ groupAction.parameterName }}" data-target="{{ groupAction.target }}" data-message="{{ groupAction.confirmationMessage|trans }}" data-method="{{ groupAction.method }}" data-parameter-name="{{ groupAction.parameterName }}">{{ groupAction.title|trans }}</option>
+                                <option data-target-url="{% if groupAction.targetUrl %}{{ groupAction.targetUrl }}{% elseif groupAction.targetAction %}{{ url(groupAction.targetAction) }}{% endif %}" data-parameter-name="{{ groupAction.parameterName }}" data-target="{{ groupAction.target }}" data-message="{% if groupAction.confirmationMessage %}{{ groupAction.confirmationMessage|trans }}{% endif %}" data-method="{{ groupAction.method }}" data-parameter-name="{{ groupAction.parameterName }}">{{ groupAction.title|trans }}</option>
                             {% endfor %}
                         </select>
                     </label>
@@ -82,11 +83,11 @@
             {% endif %}
 
             <span class="submit">
-                <input type="submit" value="{{ "Apply"|trans }}" />
-                <input type="reset" value="{{ "Reset"|trans }}" />
+                <input type="submit" value="{{ "filter.apply"|trans }}" />
+                <input type="reset" value="{{ "filter.reset"|trans }}" />
             </span>
 
-            <span class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="Loading" /> {{ "Loading"|trans }}...</span>
+            <span class="loading-indicator"><img src="{{ asset('bundles/arnegroskurthsymgrid/img/reload.svg') }}" alt="{{ "loading"|trans }}" /> {{ "loading"|trans }}</span>
 
         </td>
 

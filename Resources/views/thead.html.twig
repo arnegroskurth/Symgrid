@@ -6,7 +6,7 @@
         {% endif %}
 
         {% for column in grid.columnList %}
-            <th class="{{ column.classes|join(' ') }}" data-column="{{ column.identifier }}" data-path="{{ column.dataPath }}" {% if column.headerTooltip %}data-tooltip="{{ column.headerTooltip }}"{% endif %}>
+            <th class="{{ column.classes|join(' ') }}" data-column="{{ column.identifier }}" data-path="{{ column.dataPath }}" {% if column.headerTooltip %}data-tooltip="{{ column.headerTooltip|trans }}"{% endif %}>
                 {% if grid.sortable and column.sortable %}
                     <a class="sort" href="#">{{ column.title|trans }}</a>
                 {% else %}
@@ -35,25 +35,25 @@
 
                 {% if column.filterDateExact %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
-                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "Is"|trans }}..." />
+                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "filter.dateExact"|trans }}..." />
                     </label>
                 {% elseif column.filterDateRange %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-after">
-                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-after" name="_filter[{{ column.identifier }}][after]" placeholder="{{ "After"|trans }}..." />
+                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-after" name="_filter[{{ column.identifier }}][after]" placeholder="{{ "filter.dateRange.after"|trans }}..." />
                     </label>
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-before">
-                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-before" name="_filter[{{ column.identifier }}][before]" placeholder="{{ "Before"|trans }}..." />
+                        <input type="date" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-before" name="_filter[{{ column.identifier }}][before]" placeholder="{{ "filter.dateRange.before"|trans }}..." />
                     </label>
                 {% elseif column.filterNumericExact %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
-                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "Equals"|trans }}..." />
+                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "filter.numericExact"|trans }}..." />
                     </label>
                 {% elseif column.filterNumericRange %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-min">
-                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-min" name="_filter[{{ column.identifier }}][min]" placeholder="{{ "Min"|trans }}..." />
+                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-min" name="_filter[{{ column.identifier }}][min]" placeholder="{{ "filter.numericRange.min"|trans }}..." />
                     </label>
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-max">
-                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-max" name="_filter[{{ column.identifier }}][max]" placeholder="{{ "Max"|trans }}..." />
+                        <input type="number" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-max" name="_filter[{{ column.identifier }}][max]" placeholder="{{ "filter.numericRange.max"|trans }}..." />
                     </label>
                 {% elseif column.filterSelect %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-in">
@@ -61,10 +61,10 @@
                             <option></option>
 
                             {% if column.filterNullable %}
-                                <option value="null">{{ "Is not defined"|trans }}</option>
+                                <option value="null">{{ "filter.null"|trans }}</option>
                             {% endif %}
 
-                            <optgroup label="{{ "Values"|trans }}">
+                            <optgroup label="{{ "filter.select.values"|trans }}">
                                 {% for value, alias in column.aliases %}
                                     <option value="{{ value }}">{{ alias|trans }}</option>
                                 {% endfor %}
@@ -73,11 +73,11 @@
                     </label>
                 {% elseif column.filterStringContains %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-contains">
-                        <input type="search" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-contains" name="_filter[{{ column.identifier }}][contains]" placeholder="{{ "Contains"|trans }}..." />
+                        <input type="search" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-contains" name="_filter[{{ column.identifier }}][contains]" placeholder="{{ "filter.string.contains"|trans }}..." />
                     </label>
                 {% elseif column.filterStringExact %}
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals">
-                        <input type="text" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "Equals"|trans }}..." />
+                        <input type="text" class="filter {{ column.filter }}" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-equals" name="_filter[{{ column.identifier }}][equals]" placeholder="{{ "filter.string.equals"|trans }}..." />
                     </label>
                 {% endif %}
 
@@ -85,8 +85,8 @@
                     <label for="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null">
                         <select class="filter null" id="symgrid-{{ grid.identifier}}-filter-{{ column.identifier }}-null" name="_filter[{{ column.identifier }}][null]">
                             <option></option>
-                            <option value="yes">{{ "Empty"|trans }}</option>
-                            <option value="no">{{ "Not empty"|trans }}</option>
+                            <option value="yes">{{ "filter.null"|trans }}</option>
+                            <option value="no">{{ "filter.notNull"|trans }}</option>
                         </select>
                     </label>
                 {% endif %}
