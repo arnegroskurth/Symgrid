@@ -43,7 +43,7 @@
 
             <span class="count">
                 <span class="total">{{ "data.count"|trans }}: {{ grid.dataSource.totalCount }}</span>
-                {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "data.displayed"|trans }}){% endif %}
+                {% if grid.pageable and grid.pageCount > 1 %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "data.displayed"|trans }}){% endif %}
             </span>
 
             {% if grid.pageable and grid.pageCount > 1 %}
@@ -56,7 +56,7 @@
                         {% endfor %}
                     </select>
                 </label>
-                {{ "data.of" }}
+                {{ "data.of"|trans }}
                 <span class="total">{{ grid.pageCount }}</span>
             </span>
             {% endif %}

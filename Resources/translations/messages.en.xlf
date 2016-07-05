@@ -18,6 +18,10 @@
                 <source>data.export</source>
                 <target>Export</target>
             </trans-unit>
+            <trans-unit id="data.of">
+                <source>data.of</source>
+                <target>of</target>
+            </trans-unit>
             <trans-unit id="data.page">
                 <source>data.page</source>
                 <target>Page</target>
