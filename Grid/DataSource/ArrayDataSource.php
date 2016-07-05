@@ -2,6 +2,7 @@
 
 namespace ArneGroskurth\Symgrid\Grid\DataSource;
 
+use ArneGroskurth\Symgrid\Grid\AbstractColumn;
 use ArneGroskurth\Symgrid\Grid\AbstractDataSource;
 use ArneGroskurth\Symgrid\Grid\ArraysTrait;
 use ArneGroskurth\Symgrid\Grid\ColumnList;
@@ -214,15 +215,6 @@ class ArrayDataSource extends AbstractDataSource implements \Iterator {
     /**
      * {@inheritdoc}
      */
-    public function isSortable() {
-
-        return false;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyOrder(DataOrder $dataOrder = null) {
 
         throw new Exception("Data ordering not implemented for this data source.");
@@ -241,15 +233,6 @@ class ArrayDataSource extends AbstractDataSource implements \Iterator {
     /**
      * {@inheritdoc}
      */
-    public function isFilterable() {
-
-        return false;
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilter(DataFilter $dataFilter) {
 
         throw new Exception("Data filtering not implemented for this data source.");
@@ -262,6 +245,15 @@ class ArrayDataSource extends AbstractDataSource implements \Iterator {
     public function getAppliedFilters() {
 
         return array();
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAggregation(AbstractColumn $column) {
+
+        throw new Exception("Data aggregation not implemented for this data source.");
     }
 
 

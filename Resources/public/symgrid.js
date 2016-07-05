@@ -141,6 +141,17 @@
 
 
         /**
+         * Exports the grid in a given format (csv, excel, html, pdf).
+         *
+         * @param format Format to export grid to.
+         */
+        this.export = function(format) {
+
+            redirect(null, $(container).find('form').serialize() + '&_export=' + format + '&' + window.location.search.slice(1));
+        };
+
+
+        /**
          * Sets up all event handlers for this grid.
          * This is triggered after the grid (or parts of it) are refreshed.
          *
@@ -240,9 +251,9 @@
 
 
             // export
-            $(container).find('input[name=_export]').off().click(function() {
+            $(container).find('.export-button').click(function() {
 
-                redirect(null, $(container).find('form').serialize() + '&_export=' + $(this).val() + '&' + window.location.search.slice(1));
+                $(this).Symgrid().export($(this).attr('data-format'));
             });
 
 

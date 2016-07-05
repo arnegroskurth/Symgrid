@@ -41,6 +41,7 @@ class NumericColumn extends AbstractColumn {
         $this->decimalPoint = $decimalPoint;
         $this->thousandsSeparator = $thousandsSeparator;
         $this->filter = Constants::FILTER_NUMERIC_RANGE;
+        $this->aggregation = Constants::AGGREGATE_SUM;
     }
 
 

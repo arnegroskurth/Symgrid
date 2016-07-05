@@ -1,7 +1,9 @@
+.symgrid.styled * {
+  outline: medium none; }
 .symgrid.styled table {
   border-collapse: collapse;
   background-color: white;
-  font-family: sans-serif;
+  font-family: Calibri, sans-serif;
   font-size: 13px; }
 .symgrid.styled th {
   padding: 5px 3px;
@@ -14,7 +16,7 @@
 .symgrid.styled th.sortable a:hover {
   text-decoration: underline; }
 .symgrid.styled th, .symgrid.styled td {
-  border: 1px solid #ddd; }
+  border: 1px solid #dddddd; }
 .symgrid.styled tr.selected {
   background-color: lightskyblue; }
 .symgrid.styled td {
@@ -56,5 +58,15 @@
 .symgrid.styled .loading-indicator img {
   height: 1em;
   vertical-align: top; }
+.symgrid.styled .toolbar .count .total {
+  font-weight: bold; }
+.symgrid.styled .toolbar-items > span {
+  padding: 3px 5px;
+  border-left: 1px solid #dddddd; }
+  .symgrid.styled .toolbar-items > span:first-child {
+    border-left: 0 none; }
+.symgrid.styled .export-button {
+  padding: 3px;
+  cursor: pointer; }
 
 /*# sourceMappingURL=style.css.map */

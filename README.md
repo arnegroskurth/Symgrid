@@ -5,8 +5,6 @@ Symgrid is a Symfony data grid bundle inspired by the [APYDataGridBundle](https:
 
 ## Features
 
-(List includes some features that are not implemented yet)
-
 - Supports Doctrine Entities (Entity), QueryBuilder (QueryBuilder) and Array (Array) data sources
 - Built in column types: Alias, Bool, Currency, Date, DateTime, Numeric and String
 - Custom column types definable via Callbacks
@@ -14,12 +12,11 @@ Symgrid is a Symfony data grid bundle inspired by the [APYDataGridBundle](https:
 - Exportable to CSV, HTML, Excel and PDF
 - Mass actions
 - Row actions
-- REST API on data source
 - Generic filters on built in column types
+- Column aggregations respecting filters
 - Automatic Ajax refresh on filter(s) change
 - Row ordering
 - Pagination
-- Customizable twig templates
 - JavaScript API for registration of event listeners
 
 
@@ -30,7 +27,7 @@ Symgrid is a Symfony data grid bundle inspired by the [APYDataGridBundle](https:
 Symgrid is available on [Packagist](https://packagist.org/packages/arne-groskurth/symgrid) and can therefore be installed via Composer:
 
 ```bash
-composer require arne-groskurth/symgrid
+$ composer require arne-groskurth/symgrid
 ```
 
 ### Step 2: Enable the bundle
@@ -44,9 +41,16 @@ public function registerBundles() {
 
     $bundles = array(
         // ...
-        new ArneGroskurth\Symgrid\ArneGroskurthSymgridBundle()
+        new ArneGroskurth\Symgrid\ArneGroskurthSymgridBundle(),
+        new Bmatzner\FontAwesomeBundle\BmatznerFontAwesomeBundle()
     );
 }
+```
+
+### Step 3: Install assets
+
+```bash
+$ php app/console assets:install web
 ```
 
 ### Done!

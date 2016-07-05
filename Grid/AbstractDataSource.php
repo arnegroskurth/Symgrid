@@ -71,4 +71,12 @@ abstract class AbstractDataSource {
      * @return DataFilter[]
      */
     abstract public function getAppliedFilters();
+
+
+    /**
+     * @param AbstractColumn $column
+     *
+     * @return mixed
+     */
+    abstract public function getAggregation(AbstractColumn $column);
 }

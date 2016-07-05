@@ -15,7 +15,8 @@
     "php": ">=5.4.0",
     "symfony/symfony": "~2.4|~3.0",
     "doctrine/orm": "~2.4",
-    "twig/twig": "~1.24"
+    "twig/twig": "~1.24",
+    "bmatzner/fontawesome-bundle": "~4.6"
   },
   "autoload": {
     "psr-4": {

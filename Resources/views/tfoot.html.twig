@@ -13,7 +13,7 @@
 
             {% for column in grid.columnList %}
                 {% if column.aggregation %}
-                    <td class="aggregation aggregation-{{ column.aggregation }} {{ column.classes|join(' ') }}"></td>
+                    <td class="aggregation aggregation-{{ column.aggregation }} {{ column.classes|join(' ') }}">{{ grid.dataSource.aggregation(column) }}</td>
                 {% else %}
                     <td>&nbsp;</td>
                 {% endif %}
@@ -42,11 +42,11 @@
         <td colspan="{{ grid.columnList.count }}" class="toolbar-items">
 
             <span class="count">
-                {{ "data.count"|trans }}: {{ grid.dataSource.totalCount }}
+                <span class="total">{{ "data.count"|trans }}: {{ grid.dataSource.totalCount }}</span>
                 {% if grid.pageable %}(<span class="displayed">{{ grid.displayedDataCount }}</span> {{ "data.displayed"|trans }}){% endif %}
             </span>
 
-            {% if grid.pageable %}
+            {% if grid.pageable and grid.pageCount > 1 %}
             <span class="page">
                 {{ "data.page"|trans }}:
                 <label for="symgrid-{{ grid.identifier}}-page">
@@ -56,16 +56,18 @@
                         {% endfor %}
                     </select>
                 </label>
+                {{ "data.of" }}
+                <span class="total">{{ grid.pageCount }}</span>
             </span>
             {% endif %}
 
             {% if grid.exportable %}
                 <span class="export">
                     {{ "data.export"|trans }}:
-                    <input type="button" name="_export" value="CSV" />
-                    <input type="button" name="_export" value="Excel" />
-                    <input type="button" name="_export" value="HTML" />
-                    <input type="button" name="_export" value="PDF" />
+                    <a class="export-button fa fa-file-text-o" data-format="csv" title="CSV"></a>
+                    <a class="export-button fa fa-file-excel-o" data-format="excel" title="Excel"></a>
+                    <a class="export-button fa fa-file-code-o" data-format="html" title="HTML"></a>
+                    <a class="export-button fa fa-file-pdf-o" data-format="pdf" title="PDF"></a>
                 </span>
             {% endif %}
 

@@ -2,6 +2,7 @@
 
 namespace ArneGroskurth\Symgrid\Grid\DataSource;
 
+use ArneGroskurth\Symgrid\Grid\AbstractColumn;
 use ArneGroskurth\Symgrid\Grid\AbstractDataSource;
 use ArneGroskurth\Symgrid\Grid\ColumnList;
 use ArneGroskurth\Symgrid\Grid\Constants;
@@ -203,6 +204,28 @@ class QueryBuilderDataSource extends AbstractDataSource implements \IteratorAggr
     public function getAppliedFilters() {
 
         return $this->filters;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAggregation(AbstractColumn $column) {
+
+        $queryBuilder = $this->getQueryBuilder();
+        $path = $this->getDirectAccessAlias($column->getDataPath());
+
+        switch($column->getAggregation()) {
+
+            case Constants::AGGREGATE_AVERAGE: $queryBuilder->select(sprintf('AVG(%s)', $path)); break;
+            case Constants::AGGREGATE_MAX: $queryBuilder->select(sprintf('MAX(%s)', $path)); break;
+            case Constants::AGGREGATE_MIN: $queryBuilder->select(sprintf('MIN(%s)', $path)); break;
+            case Constants::AGGREGATE_SUM: $queryBuilder->select(sprintf('SUM(%s)', $path)); break;
+
+            default: throw new Exception("Unknown aggregation type.");
+        }
+
+        return $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
 

@@ -54,6 +54,7 @@ class CurrencyColumn extends AbstractColumn {
         $this->decimalPoint = $decimalPoint;
         $this->thousandsSeparator = $thousandsSeparator;
         $this->decimalPlaces = $decimalPlaces;
+        $this->aggregation = Constants::AGGREGATE_SUM;
     }
 
 

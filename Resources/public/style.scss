@@ -1,10 +1,13 @@
 
+$borderColor: #dddddd;
+
+
 .symgrid.styled {
 
   table {
     border-collapse: collapse;
     background-color: white;
-    font-family: sans-serif;
+    font-family: Calibri, sans-serif;
     font-size: 13px;
   }
 
@@ -24,7 +27,7 @@
   }
 
   th, td {
-    border: 1px solid #ddd;
+    border: 1px solid $borderColor;
   }
 
   tr.selected {
@@ -80,5 +83,23 @@
   .loading-indicator img {
     height: 1em;
     vertical-align: top;
+  }
+
+  .toolbar .count .total {
+    font-weight: bold;
+  }
+
+  .toolbar-items > span {
+    padding: 3px 5px;
+    border-left: 1px solid $borderColor;
+
+    &:first-child {
+      border-left: 0 none;
+    }
+  }
+
+    .export-button {
+    padding: 3px;
+    cursor: pointer;
   }
 }

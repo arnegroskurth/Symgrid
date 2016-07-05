@@ -720,7 +720,7 @@ class Grid {
                 $filterParameters = $queryBag->get('_filter', array());
 
                 if(!is_array($filterParameters)) {
-                    throw new BadRequestHttpException();
+                    throw new BadRequestHttpException('Malformed filter request.');
                 }
 
                 foreach($filterParameters as $columnIdentifier => $filter) {
@@ -728,15 +728,15 @@ class Grid {
                     $column = $this->columnList->getByIdentifier($columnIdentifier);
 
                     if(is_null($column)) {
-                        throw new BadRequestHttpException();
+                        throw new BadRequestHttpException('Request to filter unknown column.');
                     }
 
                     if(!$column->isFilterable()) {
-                        throw new BadRequestHttpException();
+                        throw new BadRequestHttpException('Request to filter not filterable column.');
                     }
 
                     if(!is_array($filter)) {
-                        throw new BadRequestHttpException();
+                        throw new BadRequestHttpException('Malformed filter request.');
                     }
 
                     foreach($filter as $keyword => $value) {
@@ -747,7 +747,7 @@ class Grid {
                             $dataFilter = new DataFilter($column->getDataPath(), $keyword, $value);
                         }
                         catch(Exception $e) {
-                            throw new BadRequestHttpException(null, $e);
+                            throw new BadRequestHttpException('Malformed date filter value.', $e);
                         }
 
                         $this->dataSource->applyFilter($dataFilter);
@@ -821,12 +821,6 @@ class Grid {
         }
 
         return null;
-    }
-
-
-    public function getApiResponse() {
-
-        // todo: implement
     }
 
 
