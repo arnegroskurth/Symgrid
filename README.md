@@ -1,5 +1,5 @@
 
-# Symgrid #
+# Symgrid (pre-alpha)
 
 Symgrid is a Symfony data grid bundle.
 
@@ -21,6 +21,7 @@ Symgrid is a Symfony data grid bundle.
 - Row ordering
 - Pagination
 - JavaScript API for registration of event listeners
+- Translation for all labels, column, mass- and row-action titles
 
 
 ## Installation ##

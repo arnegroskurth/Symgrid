@@ -3,3 +3,4 @@
 - REST API on data source
 - Filter persistence (in PHP session)
 - Replace Column identifier with column title
+- Bundle FontAwesome with symgrid
