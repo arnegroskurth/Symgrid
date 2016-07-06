@@ -2,12 +2,11 @@
 
 namespace ArneGroskurth\Symgrid\Grid\Column;
 
-use ArneGroskurth\Symgrid\Grid\AbstractColumn;
 use ArneGroskurth\Symgrid\Grid\Constants;
 use ArneGroskurth\Symgrid\Grid\Exception;
 
 
-class CurrencyColumn extends AbstractColumn {
+class CurrencyColumn extends NumericColumn {
 
     const CURRENCY_EURO = 'euro';
     const CURRENCY_POUND_STERLING = 'gbp';
@@ -19,21 +18,6 @@ class CurrencyColumn extends AbstractColumn {
      * @var string
      */
     protected $currency;
-
-    /**
-     * @var string
-     */
-    protected $decimalPoint;
-
-    /**
-     * @var string
-     */
-    protected $thousandsSeparator;
-
-    /**
-     * @var int
-     */
-    protected $decimalPlaces;
 
 
     /**
@@ -48,13 +32,9 @@ class CurrencyColumn extends AbstractColumn {
      */
     public function __construct($title, $dataPath, $currency = self::CURRENCY_EURO, $decimalPoint = ',', $thousandsSeparator = ' ', $decimalPlaces = 2) {
 
-        parent::__construct($title, $dataPath);
+        parent::__construct($title, $dataPath, $decimalPlaces, $decimalPoint, $thousandsSeparator);
 
         $this->currency = $currency;
-        $this->decimalPoint = $decimalPoint;
-        $this->thousandsSeparator = $thousandsSeparator;
-        $this->decimalPlaces = $decimalPlaces;
-        $this->aggregation = Constants::AGGREGATE_SUM;
     }
 
 
