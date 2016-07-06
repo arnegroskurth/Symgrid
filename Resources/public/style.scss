@@ -80,6 +80,14 @@ $borderColor: #dddddd;
     &.numericExact, &.numericRange { width: 40px; }
   }
 
+
+  .aggregation {
+    white-space: nowrap;
+    font-weight: bold;
+    text-align: right;
+  }
+
+
   .loading-indicator img {
     height: 1em;
     vertical-align: top;
@@ -98,7 +106,7 @@ $borderColor: #dddddd;
     }
   }
 
-    .export-button {
+  .export-button {
     padding: 3px;
     cursor: pointer;
   }

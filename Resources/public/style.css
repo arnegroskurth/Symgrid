@@ -53,6 +53,10 @@
   width: 75px; }
 .symgrid.styled .filter.numericExact, .symgrid.styled .filter.numericRange {
   width: 40px; }
+.symgrid.styled .aggregation {
+  white-space: nowrap;
+  font-weight: bold;
+  text-align: right; }
 .symgrid.styled .loading-indicator img {
   height: 1em;
   vertical-align: top; }

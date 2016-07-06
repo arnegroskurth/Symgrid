@@ -26,9 +26,6 @@
 
 
   .aggregation {
-
-    font-weight: bold;
-
     &.aggregation-avg:before { content: 'Avg '; }
     &.aggregation-max:before { content: 'Max '; }
     &.aggregation-min:before { content: 'Min '; }
