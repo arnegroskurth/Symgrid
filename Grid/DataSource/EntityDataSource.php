@@ -5,6 +5,7 @@ namespace ArneGroskurth\Symgrid\Grid\DataSource;
 use ArneGroskurth\Symgrid\Grid\Column\BoolColumn;
 use ArneGroskurth\Symgrid\Grid\Column\DateColumn;
 use ArneGroskurth\Symgrid\Grid\Column\DateTimeColumn;
+use ArneGroskurth\Symgrid\Grid\Column\IntegerColumn;
 use ArneGroskurth\Symgrid\Grid\Column\NumericColumn;
 use ArneGroskurth\Symgrid\Grid\Column\StringColumn;
 use ArneGroskurth\Symgrid\Grid\ColumnList;
@@ -137,41 +138,57 @@ class EntityDataSource extends QueryBuilderDataSource {
             $title = $this->getTitleByPath($subPathParts);
             $path = $this->getPathFromParts($subPathParts);
 
+            $isId = isset($fieldMapping['id']);
             $nullable = $parentNullable || $fieldMapping['nullable'];
+
+            $column = null;
 
             if($fieldMapping['type'] == Type::INTEGER) {
 
-                $columnList->addColumn((new NumericColumn($title, $path, 0))->setFilterNullable($nullable));
+                $column = new IntegerColumn($title, $path);
             }
 
             elseif($fieldMapping['type'] == Type::FLOAT) {
 
-                $columnList->addColumn((new NumericColumn($title, $path))->setFilterNullable($nullable));
+                $column = new NumericColumn($title, $path);
             }
 
             elseif(in_array($fieldMapping['type'], array(Type::STRING, Type::TEXT, Type::SIMPLE_ARRAY))) {
 
-                $columnList->addColumn((new StringColumn($title, $path))->setFilterNullable($nullable));
+                $column = new StringColumn($title, $path);
             }
 
             elseif($fieldMapping['type'] == Type::DATE) {
 
-                $columnList->addColumn((new DateColumn($title, $path))->setFilterNullable($nullable));
+                $column = new DateColumn($title, $path);
             }
 
             elseif($fieldMapping['type'] == Type::DATETIME) {
 
-                $columnList->addColumn((new DateTimeColumn($title, $path))->setFilterNullable($nullable));
+                $column = new DateTimeColumn($title, $path);
             }
 
             elseif($fieldMapping['type'] == Type::BOOLEAN) {
 
-                $columnList->addColumn((new BoolColumn($title, $path))->setFilterNullable($nullable));
+                $column = new BoolColumn($title, $path);
             }
 
             elseif($fieldMapping['type'] == Type::TARRAY) {
 
-                $columnList->addColumn((new StringColumn($title, $path . '*'))->setFilterNullable($nullable));
+                $column = new StringColumn($title, $path . '*');
+            }
+
+            
+            if($column) {
+
+                $column->setFilterNullable($nullable);
+
+                if($isId) {
+
+                    $column->setAggregation(null);
+                }
+                
+                $columnList->addColumn($column);
             }
         }
 

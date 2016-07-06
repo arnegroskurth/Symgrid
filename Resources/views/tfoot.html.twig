@@ -13,7 +13,8 @@
 
             {% for column in grid.columnList %}
                 {% if column.aggregation %}
-                    <td class="aggregation aggregation-{{ column.aggregation }} {{ column.classes|join(' ') }}">{{ grid.dataSource.aggregation(column) }}</td>
+                    {% set value = column.renderValue(grid.dataSource.aggregation(column)) %}
+                    <td class="aggregation aggregation-{{ column.aggregation }} {{ column.classes|join(' ') }}">{% if value is null %}-{% else %}{{ value }}{% endif %}</td>
                 {% else %}
                     <td>&nbsp;</td>
                 {% endif %}
