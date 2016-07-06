@@ -1,13 +1,14 @@
 
 # Symgrid #
 
-Symgrid is a Symfony data grid bundle inspired by the [APYDataGridBundle](https://github.com/APY/APYDataGridBundle).
+Symgrid is a Symfony data grid bundle.
 
 ## Features
 
 - Supports Doctrine Entities (Entity), QueryBuilder (QueryBuilder) and Array (Array) data sources
 - Built in column types: Alias, Bool, Currency, Date, DateTime, Numeric and String
 - Custom column types definable via Callbacks
+- Multiple values collapsible to single column (e.g. comma-separated)
 - Automatic column type detection
 - Exportable to CSV, HTML, Excel and PDF
 - Mass actions
@@ -32,7 +33,7 @@ $ composer require arne-groskurth/symgrid
 
 ### Step 2: Enable the bundle
 
-The Symgrid bundle needs to be registered as Symfony bundle:
+The SymgridBundle along with the FontAwesomeBundle needs to be registered on the kernel:
 
 ```php
 // app/AppKernel.php
@@ -50,10 +51,54 @@ public function registerBundles() {
 ### Step 3: Install assets
 
 ```bash
-$ php app/console assets:install web
+$ php app/console assets:install --symlink
 ```
 
 ### Done!
+
+## Getting started
+
+After the installation Symgrid is available as a service and can be configured e.g. inside a controller.
+
+### Basic entity-based grid configuration in controller:
+```php
+namespace AppBundle\Controller;
+
+use ArneGroskurth\Symgrid\Grid\DataSource\EntityDataSource;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+class DefaultController extends Controller {
+
+    public function testAction() {
+
+        // Use entity 'User' as data source
+        $dataSource = new EntityDataSource('AppBundle\Entity\User');
+
+        // Generate column list from data source
+        $columnList = $dataSource->getColumnLis();
+
+        // Construct grid from data source and column list
+        $grid = $this->get('arnegroskurth_symgrid.grid')
+            ->setDataSource($dataSource)
+            ->setColumnList($columnList);
+
+
+        // Return grid response or fall back to given template
+        return $grid->getResponse('view.html.twig', array(
+            'grid' => $grid
+        ));
+    }
+}
+```
+
+### Symgrid rendering in Twig template
+```twig
+{{ symgrid(grid) }}
+```
+
+## Documentation
+
+See the [table of contents](https://github.com/arnegroskurth/Symgrid/blob/master/Resources/doc/toc.md).
 
 ## License ##
 
