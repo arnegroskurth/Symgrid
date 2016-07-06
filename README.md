@@ -3,6 +3,8 @@
 
 Symgrid is a Symfony data grid bundle.
 
+![screenshot](https://github.com/arnegroskurth/Symgrid/blob/master/Resources/doc/screenshots/example.png?raw=true)
+
 ## Features
 
 - Supports Doctrine Entities (Entity), QueryBuilder (QueryBuilder) and Array (Array) data sources
