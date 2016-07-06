@@ -22,7 +22,7 @@ class Grid {
     /**
      * @var string
      */
-    protected $title;
+    protected $title = 'Symgrid';
 
     /**
      * @var AbstractDataSource
@@ -114,6 +114,11 @@ class Grid {
      */
     protected $customClasses = array();
 
+    /**
+     * @var string[]
+     */
+    protected static $takenTitles = array();
+
 
     /**
      * Grid constructor.
@@ -139,12 +144,21 @@ class Grid {
      * @param string $title
      *
      * @return Grid
+     * @throws Exception
      */
     public function setTitle($title) {
 
-        $this->title = $title;
+        if($this->title && ($key = array_search($title, self::$takenTitles)) !== false) {
 
-        return $this;
+            unset(self::$takenTitles[$key]);
+        }
+
+        if(in_array($title, self::$takenTitles)) {
+
+            throw new Exception("Title is already in use.");
+        }
+
+        return self::$takenTitles[] = $title;
     }
 
     /**
