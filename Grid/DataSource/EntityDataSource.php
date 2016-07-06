@@ -153,6 +153,11 @@ class EntityDataSource extends QueryBuilderDataSource {
                 $column = new NumericColumn($title, $path);
             }
 
+            elseif($fieldMapping['type'] == Type::DECIMAL) {
+
+                $column = new NumericColumn($title, $path);
+            }
+
             elseif(in_array($fieldMapping['type'], array(Type::STRING, Type::TEXT, Type::SIMPLE_ARRAY))) {
 
                 $column = new StringColumn($title, $path);
