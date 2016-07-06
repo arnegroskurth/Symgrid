@@ -50,6 +50,25 @@ class ColumnList implements \Countable, \IteratorAggregate {
 
 
     /**
+     * Shortcut for column replacement using addColumn.
+     *
+     * @param AbstractColumn $newColumn Column to replace existing column with identical identifier with.
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function replaceColumn(AbstractColumn $newColumn) {
+
+        if(empty($oldColumn = $this->getByIdentifier($newColumn->getIdentifier()))) {
+
+            throw new Exception("Trying to replace non-existing column.");
+        }
+
+        return $this->addColumn($newColumn, null, true);
+    }
+
+
+    /**
      * @param string $identifier
      * @param bool $throwExceptionOnFailure
      *
