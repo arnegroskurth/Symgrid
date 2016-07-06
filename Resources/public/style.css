@@ -51,6 +51,8 @@
   max-width: 250px; }
 .symgrid.styled .filter.dateExact, .symgrid.styled .filter.dateRange {
   width: 75px; }
+.symgrid.styled .filter.null {
+  width: 50px; }
 .symgrid.styled .filter.numericExact, .symgrid.styled .filter.numericRange {
   width: 40px; }
 .symgrid.styled .aggregation {

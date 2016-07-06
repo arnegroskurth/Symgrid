@@ -73,10 +73,10 @@ $borderColor: #dddddd;
 
 
   .filter {
-
     &.stringContains { width: 50%; min-width: 100px; }
     &.stringExact { width: 100%; max-width: 250px; }
     &.dateExact, &.dateRange { width: 75px; }
+    &.null { width: 50px; }
     &.numericExact, &.numericRange { width: 40px; }
   }
 

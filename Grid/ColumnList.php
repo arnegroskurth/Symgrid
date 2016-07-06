@@ -118,6 +118,56 @@ class ColumnList implements \Countable, \IteratorAggregate {
 
 
     /**
+     * @param string[] $titles Column titles to show.
+     * @param bool $exclusive Whether to show given columns exclusively.
+     *
+     * @return $this
+     */
+    public function showColumns(array $titles, $exclusive = false) {
+
+        foreach($this->columns as $column) {
+
+            if(in_array($column->getTitle(), $titles)) {
+
+                $column->setDisplayed(true);
+            }
+
+            elseif($exclusive) {
+
+                $column->setDisplayed(false);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @param string[] $titles Column titles to hide.
+     * @param bool $exclusive Whether to hide given columns exclusively.
+     *
+     * @return $this
+     */
+    public function hideColumns(array $titles, $exclusive = false) {
+
+        foreach($this->columns as $column) {
+
+            if(in_array($column->getTitle(), $titles)) {
+
+                $column->setDisplayed(false);
+            }
+
+            elseif($exclusive) {
+
+                $column->setDisplayed(true);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
      * @param bool $includeHidden
      *
      * @return bool
