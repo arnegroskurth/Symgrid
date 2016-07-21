@@ -75,7 +75,7 @@ class DefaultController extends Controller {
     public function testAction() {
 
         // Use entity 'User' as data source
-        $dataSource = new EntityDataSource('AppBundle\Entity\User');
+        $dataSource = new EntityDataSource($this->get('doctrine')->getManager(), 'AppBundle\Entity\User');
 
         // Generate column list from data source
         $columnList = $dataSource->getColumnLis();
