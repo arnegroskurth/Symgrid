@@ -57,6 +57,17 @@ public function registerBundles() {
 $ php app/console assets:install --symlink
 ```
 
+Two stylesheets are available afterwards:
+- layout.css: Functional stylings taking care e.g. of the visibility of the loading indicator
+- style.css: Bundled grid style as seen on the screenshot above
+
+It is recommended to include both styles and modify them in the applications stylings:
+
+```html
+<link rel="stylesheet" href="{{ asset('bundles/arnegroskurthsymgrid/layout.css') }}" />
+<link rel="stylesheet" href="{{ asset('bundles/arnegroskurthsymgrid/style.css') }}" />
+```
+
 ### Done!
 
 ## Getting started
