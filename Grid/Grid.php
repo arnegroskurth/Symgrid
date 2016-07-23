@@ -158,7 +158,9 @@ class Grid {
             throw new Exception("Title is already in use.");
         }
 
-        return self::$takenTitles[] = $title;
+        self::$takenTitles[] = $this->title = $title;
+
+        return $this;
     }
 
     /**
