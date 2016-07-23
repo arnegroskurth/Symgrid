@@ -2,10 +2,14 @@
 
 namespace ArneGroskurth\Symgrid\Grid;
 
+use ArneGroskurth\Symgrid\Grid\DataSource\ArrayDataSource;
+use ArneGroskurth\Symgrid\Grid\DataSource\EntityDataSource;
+use ArneGroskurth\Symgrid\Grid\DataSource\QueryBuilderDataSource;
 use ArneGroskurth\Symgrid\Grid\Export\CSVExport;
 use ArneGroskurth\Symgrid\Grid\Export\ExcelExport;
 use ArneGroskurth\Symgrid\Grid\Export\HTMLExport;
 use ArneGroskurth\Symgrid\Grid\Export\PDFExport;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -181,11 +185,12 @@ class Grid {
 
     /**
      * @param AbstractDataSource $dataSource
+     * @param bool $retrieveColumns
      *
      * @return $this
      * @throws Exception
      */
-    public function setDataSource(AbstractDataSource $dataSource) {
+    public function setDataSource(AbstractDataSource $dataSource, $retrieveColumns = true) {
 
         if(!$dataSource instanceof \Traversable) {
 
@@ -193,6 +198,63 @@ class Grid {
         }
 
         $this->dataSource = $dataSource;
+
+        if($retrieveColumns) {
+
+            try {
+
+                $this->columnList = $dataSource->getColumnList();
+            }
+
+            // ignore grid exceptions as columns are normally configured explicitly
+            catch(Exception $e) {}
+        }
+
+        return $this;
+    }
+
+    /**
+     * Wraps the creation and usage of an ArrayDataSource.
+     *
+     * @param array $data
+     * @param string $idPath
+     *
+     * @return Grid
+     */
+    public function fromArray(array $data, $idPath) {
+
+        $this->setDataSource(new ArrayDataSource($data, $idPath));
+
+        return $this;
+    }
+
+    /**
+     * Wraps the creation and usage of an EntityDataSource.
+     *
+     * @param string $rootClassName
+     *
+     * @return Grid
+     */
+    public function fromEntity($rootClassName) {
+
+        $entityManager = $this->container->get('doctrine')->getManager();
+
+        $this->setDataSource(new EntityDataSource($entityManager, $rootClassName));
+
+        return $this;
+    }
+
+    /**
+     * Wraps the creation and usage of a QueryBuilderDataSource.
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param string $idPath
+     *
+     * @return $this
+     */
+    public function fromQueryBuilder(QueryBuilder $queryBuilder, $idPath) {
+
+        $this->setDataSource(new QueryBuilderDataSource($queryBuilder, $idPath));
 
         return $this;
     }
