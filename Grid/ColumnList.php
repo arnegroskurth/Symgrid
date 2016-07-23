@@ -16,7 +16,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      * @param int $position Zero-based position as integer to add the column at. Zero is the leftmost column. Column is appended to the end if omitted.
      * @param bool $replaceOnCollision Whether to replace a potential existing column with the same identifier.
      *
-     * @return $this
+     * @return ColumnList
      * @throws Exception
      */
     public function addColumn(AbstractColumn $column, $position = null, $replaceOnCollision = false) {
@@ -54,7 +54,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      *
      * @param AbstractColumn $newColumn Column to replace existing column with identical identifier with.
      *
-     * @return $this
+     * @return ColumnList
      * @throws Exception
      */
     public function replaceColumn(AbstractColumn $newColumn) {
@@ -73,7 +73,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      * @param bool $throwExceptionOnFailure
      *
      * @throws Exception
-     * @return $this
+     * @return ColumnList
      */
     public function removeColumnByIdentifier($identifier, $throwExceptionOnFailure = true) {
         
@@ -103,7 +103,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      *
      * @param ColumnList $columnList
      *
-     * @return $this
+     * @return ColumnList
      * @throws Exception
      */
     public function append(ColumnList $columnList) {
@@ -121,7 +121,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      * @param string[] $titles Column titles to show.
      * @param bool $exclusive Whether to show given columns exclusively.
      *
-     * @return $this
+     * @return ColumnList
      */
     public function showColumns(array $titles, $exclusive = false) {
 
@@ -146,7 +146,7 @@ class ColumnList implements \Countable, \IteratorAggregate {
      * @param string[] $titles Column titles to hide.
      * @param bool $exclusive Whether to hide given columns exclusively.
      *
-     * @return $this
+     * @return ColumnList
      */
     public function hideColumns(array $titles, $exclusive = false) {
 

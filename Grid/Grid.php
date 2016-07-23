@@ -187,7 +187,7 @@ class Grid {
      * @param AbstractDataSource $dataSource
      * @param bool $retrieveColumns
      *
-     * @return $this
+     * @return Grid
      * @throws Exception
      */
     public function setDataSource(AbstractDataSource $dataSource, $retrieveColumns = true) {
@@ -250,7 +250,7 @@ class Grid {
      * @param QueryBuilder $queryBuilder
      * @param string $idPath
      *
-     * @return $this
+     * @return Grid
      */
     public function fromQueryBuilder(QueryBuilder $queryBuilder, $idPath) {
 
@@ -302,7 +302,7 @@ class Grid {
     /**
      * @param AbstractColumn $column
      *
-     * @return $this
+     * @return Grid
      * @throws Exception
      */
     public function addColumn(AbstractColumn $column) {
@@ -529,7 +529,7 @@ class Grid {
     /**
      * @param GroupAction $groupAction
      *
-     * @return $this
+     * @return Grid
      */
     public function addGroupAction(GroupAction $groupAction) {
 
@@ -562,7 +562,7 @@ class Grid {
     /**
      * @param RowAction $rowAction
      *
-     * @return $this
+     * @return Grid
      */
     public function addRowAction(RowAction $rowAction) {
 
@@ -659,7 +659,7 @@ class Grid {
     /**
      * @param string $customClass
      *
-     * @return $this
+     * @return Grid
      */
     public function addCustomClass($customClass) {
 
@@ -671,7 +671,7 @@ class Grid {
     /**
      * @param string $customClass
      *
-     * @return $this
+     * @return Grid
      */
     public function removeCustomClass($customClass) {
 

@@ -230,7 +230,7 @@ class QueryBuilderDataSource extends AbstractDataSource implements \IteratorAggr
 
 
     /**
-     * @return $this
+     * @return QueryBuilderDataSource
      */
     protected function invalidateCaches() {
 

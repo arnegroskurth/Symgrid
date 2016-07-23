@@ -123,7 +123,7 @@ abstract class AbstractColumn {
     /**
      * @param string $dataPath
      *
-     * @return $this
+     * @return AbstractColumn
      * @throws Exception
      */
     public function setDataPath($dataPath) {

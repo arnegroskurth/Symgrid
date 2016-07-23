@@ -48,7 +48,7 @@ abstract class AbstractDataSource {
     /**
      * @param DataOrder $dataOrder
      *
-     * @return $this
+     * @return AbstractDataSource
      */
     abstract public function applyOrder(DataOrder $dataOrder = null);
 
@@ -62,7 +62,7 @@ abstract class AbstractDataSource {
     /**
      * @param DataFilter $dataFilter
      *
-     * @return $this
+     * @return AbstractDataSource
      */
     abstract public function applyFilter(DataFilter $dataFilter);
 

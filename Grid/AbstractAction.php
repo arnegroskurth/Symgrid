@@ -55,7 +55,7 @@ abstract class AbstractAction {
     /**
      * @param string $title
      *
-     * @return $this
+     * @return AbstractAction
      */
     public function setTitle($title) {
 
@@ -75,7 +75,7 @@ abstract class AbstractAction {
     /**
      * @param string $targetAction
      *
-     * @return $this
+     * @return AbstractAction
      */
     public function setTargetAction($targetAction) {
 
@@ -95,7 +95,7 @@ abstract class AbstractAction {
     /**
      * @param string $targetUrl
      *
-     * @return $this
+     * @return AbstractAction
      */
     public function setTargetUrl($targetUrl) {
 
@@ -115,7 +115,7 @@ abstract class AbstractAction {
     /**
      * @param string $parameterName
      *
-     * @return $this
+     * @return AbstractAction
      */
     public function setParameterName($parameterName) {
 
@@ -135,7 +135,7 @@ abstract class AbstractAction {
     /**
      * @param string $target
      *
-     * @return $this
+     * @return AbstractAction
      */
     public function setTarget($target) {
 
