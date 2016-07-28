@@ -663,7 +663,10 @@ class Grid {
      */
     public function addCustomClass($customClass) {
 
-        $this->customClasses[] = $customClass;
+        if(!in_array($customClass, $this->customClasses)) {
+
+            $this->customClasses[] = $customClass;
+        }
 
         return $this;
     }
@@ -703,6 +706,19 @@ class Grid {
         if($this->hasGroupActions()) $return[] = 'selectable';
 
         return $return;
+    }
+
+
+    /**
+     * Activates the bundled default style.
+     *
+     * @return $this
+     */
+    public function useDefaultStyle() {
+
+        $this->addCustomClass('styled');
+
+        return $this;
     }
 
 
