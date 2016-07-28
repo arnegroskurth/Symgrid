@@ -78,6 +78,7 @@ After the installation Symgrid is available as a service and can be configured e
 ```php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use ArneGroskurth\Symgrid\Grid\DataSource\EntityDataSource;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -85,17 +86,11 @@ class DefaultController extends Controller {
 
     public function testAction() {
 
-        // Use entity 'User' as data source
-        $dataSource = new EntityDataSource($this->get('doctrine')->getManager(), 'AppBundle\Entity\User');
-
-        // Generate column list from data source
-        $columnList = $dataSource->getColumnLis();
-
-        // Construct grid from data source and column list
+        // Construct grid, set an entity as data source and activate bundled grid style
         $grid = $this->get('arnegroskurth_symgrid.grid')
-            ->setDataSource($dataSource)
-            ->setColumnList($columnList);
-
+            ->from(User::class)
+            ->useDefaultStyle()
+        ;
 
         // Return grid response or fall back to given template
         return $grid->getResponse('view.html.twig', array(
