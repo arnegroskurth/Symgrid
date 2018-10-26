@@ -1,5 +1,5 @@
 
-# Symgrid (pre-alpha)
+# Symgrid
 
 Symgrid is a Symfony data grid bundle.
 
